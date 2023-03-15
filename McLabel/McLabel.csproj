@@ -201,6 +201,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\Base\CommandBase.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Services\ViewNavigationService.cs" />
     <Compile Include="Utils\Registrators\ServiceRegistrator.cs" />
     <Compile Include="Utils\Registrators\ViewModelRegistrator.cs" />

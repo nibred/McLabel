@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using McLabel.Services;
+using McLabel.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,9 @@ namespace McLabel.Utils.Registrators
 {
     internal static class ServiceRegistrator
     {
-        public static IServiceCollection AddServices(this IServiceCollection services)
-        {
-            return null;
-        }
+        public static IServiceCollection AddServices(this IServiceCollection services) => services
+            .AddSingleton<FileDialogService>()
+            .AddSingleton<IFileService, XmlFileService>()
+            .AddSingleton<ViewNavigationService>();
     }
 }

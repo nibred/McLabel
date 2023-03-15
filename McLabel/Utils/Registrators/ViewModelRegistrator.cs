@@ -11,6 +11,8 @@ namespace McLabel.Utils.Registrators
     internal static class ViewModelRegistrator
     {
         public static IServiceCollection AddViewModels(this IServiceCollection services) => services
-            .AddSingleton<MainViewModel>();
+            .AddSingleton<MainViewModel>()
+            .AddSingleton<StartScreenViewModel>()
+            .AddSingleton<MainEditorViewModel>();
     }
 }

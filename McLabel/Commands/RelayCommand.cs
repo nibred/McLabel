@@ -10,9 +10,9 @@ namespace McLabel.Commands
     internal class RelayCommand : CommandBase
     {
         private readonly Action<object> _execute;
-        private readonly Predicate<object> _canExecute;
+        private readonly Func<object, bool> _canExecute;
 
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;

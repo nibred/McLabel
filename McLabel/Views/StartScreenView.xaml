@@ -1,0 +1,35 @@
+﻿<UserControl
+    x:Class="McLabel.Views.StartScreenView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:McLabel.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="720"
+    d:DesignWidth="1024"
+    FontSize="16"
+    mc:Ignorable="d">
+    <Grid>
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Vertical">
+            <TextBlock
+                Margin="0,10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="65"
+                FontWeight="Light"
+                Foreground="#666666"
+                Text="Hello" />
+            <Button Command="{Binding SelectFilesCommand}" Content="select files" />
+            <TextBlock
+                Margin="0,5"
+                HorizontalAlignment="Center"
+                FontWeight="Bold"
+                Foreground="#222222"
+                Text="or create" />
+            <Button Command="{Binding OpenMainEditorCommand}" Content="new file" />
+        </StackPanel>
+    </Grid>
+</UserControl>

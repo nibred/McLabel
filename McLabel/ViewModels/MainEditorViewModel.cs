@@ -25,6 +25,7 @@ namespace McLabel.ViewModels
             {
                 if (_selectedCategory is null)
                 {
+                    //AddColorsInItems();
                     return _items;
                 }
                 return _items.Where(x => x.Category == SelectedCategory.Name).Select(x => { x.Color = SelectedCategory.Color; return x; }).ToObservableCollection();
@@ -92,6 +93,20 @@ namespace McLabel.ViewModels
                     Printer = "",
                     PrintTemplate = ""
                 });
+            }
+        }
+
+        private void AddColorsInItems()
+        {
+            if (!_items.IsEmpty() && !_categories.IsEmpty())
+            {
+                foreach ((Item item, Category category) in _items
+                    .SelectMany(item => _categories
+                    .Where(category => item.Category == category.Name)
+                    .Select(category => (item, category))))
+                {
+                    item.Color = category.Color;
+                }
             }
         }
         private string RandomColorGenerator() // only for design time

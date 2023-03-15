@@ -5,6 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:McLabel.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:McLabel.ViewModels"
+    d:DataContext="{d:DesignInstance {x:Type vm:StartScreenViewModel}}"
     d:DesignHeight="720"
     d:DesignWidth="1024"
     FontSize="16"

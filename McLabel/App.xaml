@@ -1,9 +1,11 @@
-﻿<Application x:Class="McLabel.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:McLabel"
-             StartupUri="MainWindow.xaml">
+﻿<Application
+    x:Class="McLabel.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:McLabel"
+    xmlns:vmb="clr-namespace:McLabel.ViewModels.Base"
+    StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
-         
+        <vmb:ViewModelLocator x:Key="Locator" />
     </Application.Resources>
 </Application>

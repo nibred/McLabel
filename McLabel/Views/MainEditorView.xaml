@@ -138,21 +138,21 @@
                         Grid.ColumnSpan="3"
                         Panel.ZIndex="100"
                         Background="White"
-                        Visibility="{Binding IsItemSelected,
-                                             UpdateSourceTrigger=PropertyChanged,
-                                             Converter={StaticResource ReversedBooleanConverter}}">
+                        Visibility="Collapsed">
                         <TextBlock
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             FontSize="16"
                             Foreground="#5c5c5c"
-                            Text="No item selected" />
+                            Text="No item selected"
+                            TextWrapping="Wrap" />
                     </Border>
                     <TextBlock
                         Grid.Row="0"
                         Grid.ColumnSpan="3"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
+                        FontSize="15"
                         FontWeight="Bold"
                         Text="{Binding SelectedItem.Line2nd}"
                         TextAlignment="Center"
@@ -162,7 +162,26 @@
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
+                        FontWeight="Bold"
                         Text="Zrobione:"
+                        TextAlignment="Center"
+                        TextWrapping="NoWrap" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{Binding DateTimeNow,
+                                       StringFormat=d.M.yy}"
+                        TextAlignment="Center"
+                        TextWrapping="NoWrap" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="{Binding DateTimeNow,
+                                       StringFormat=HH:mm}"
                         TextAlignment="Center"
                         TextWrapping="NoWrap" />
                     <TextBlock
@@ -170,7 +189,26 @@
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
+                        FontWeight="Bold"
                         Text="{Binding SelectedItem.Exp1Message}"
+                        TextAlignment="Center"
+                        TextWrapping="NoWrap" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{Binding DateTimeReady1,
+                                       StringFormat=d.M.yy}"
+                        TextAlignment="Center"
+                        TextWrapping="NoWrap" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="{Binding DateTimeReady1,
+                                       StringFormat=HH:mm}"
                         TextAlignment="Center"
                         TextWrapping="NoWrap" />
                     <TextBlock
@@ -178,7 +216,26 @@
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
+                        FontWeight="Bold"
                         Text="{Binding SelectedItem.Exp2Message}"
+                        TextAlignment="Center"
+                        TextWrapping="NoWrap" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{Binding DateTimeReady2,
+                                       StringFormat=d.M.yy}"
+                        TextAlignment="Center"
+                        TextWrapping="NoWrap" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="{Binding DateTimeReady2,
+                                       StringFormat=HH:mm}"
                         TextAlignment="Center"
                         TextWrapping="NoWrap" />
                     <TextBlock
@@ -187,8 +244,9 @@
                         Grid.Column="3"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        FontSize="15"
+                        FontSize="17"
                         FontWeight="Bold"
+                        SnapsToDevicePixels="True"
                         Text="{Binding SelectedItem.Line1st}"
                         TextAlignment="Center"
                         TextWrapping="Wrap">
@@ -239,7 +297,8 @@
                     Grid.Column="1"
                     Margin="3"
                     IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp1Days}" />
+                    Text="{Binding ExpiredDays1,
+                                   UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock
                     Grid.Row="3"
                     Grid.Column="0"
@@ -252,7 +311,8 @@
                     Grid.Column="1"
                     Margin="3"
                     IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp1Hours}" />
+                    Text="{Binding ExpiredHours1,
+                                   UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock
                     Grid.Row="4"
                     Grid.Column="0"
@@ -265,7 +325,8 @@
                     Grid.Column="1"
                     Margin="3"
                     IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp1Minutes}" />
+                    Text="{Binding ExpiredMinutes1,
+                                   UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock
                     Grid.Row="5"
                     Grid.Column="0"
@@ -278,7 +339,8 @@
                     Grid.Column="1"
                     Margin="3"
                     IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp1Message}" />
+                    Text="{Binding SelectedItem.Exp1Message,
+                                   UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="0"
@@ -307,7 +369,8 @@
                     Grid.Column="3"
                     Margin="3"
                     IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Line1st}" />
+                    Text="{Binding SelectedItem.Line1st,
+                                   UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="2"
@@ -320,7 +383,8 @@
                     Grid.Column="3"
                     Margin="3"
                     IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Line2nd}" />
+                    Text="{Binding SelectedItem.Line2nd,
+                                   UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="2"
@@ -333,7 +397,8 @@
                     Grid.Column="3"
                     Margin="3"
                     IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp2Days}" />
+                    Text="{Binding ExpiredDays2,
+                                   UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock
                     Grid.Row="3"
                     Grid.Column="2"
@@ -346,7 +411,8 @@
                     Grid.Column="3"
                     Margin="3"
                     IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp2Hours}" />
+                    Text="{Binding ExpiredHours2,
+                                   UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock
                     Grid.Row="4"
                     Grid.Column="2"
@@ -359,7 +425,8 @@
                     Grid.Column="3"
                     Margin="3"
                     IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp2Minutes}" />
+                    Text="{Binding ExpiredMinutes2,
+                                   UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock
                     Grid.Row="5"
                     Grid.Column="2"
@@ -372,7 +439,8 @@
                     Grid.Column="3"
                     Margin="3"
                     IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp2Message}" />
+                    Text="{Binding SelectedItem.Exp2Message,
+                                   UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
         </Grid>
         <Border

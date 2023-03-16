@@ -20,6 +20,11 @@ namespace McLabel.ViewModels.Base
             OnPropertyChanged(propertyName);
             return true;
         }
+        protected virtual void Notify(ref string[] names)
+        {
+            foreach (var name in names)
+                OnPropertyChanged(name);
+        }
         protected virtual void Dispose() { }
     }
 }

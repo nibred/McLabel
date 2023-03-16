@@ -62,6 +62,7 @@ namespace McLabel.ViewModels
         #endregion
 
         #region public fields
+        public ushort FontSize => 16;
         public bool IsItemSelected => SelectedItem != null;
         public Item SelectedItem
         {

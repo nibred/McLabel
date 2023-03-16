@@ -94,6 +94,7 @@
                     Height="30"
                     Margin="3"
                     HorizontalAlignment="Center"
+                    Command="{Binding AddNewItemCommand}"
                     Content="Add new item" />
                 <Button
                     Grid.Row="0"
@@ -101,6 +102,7 @@
                     Height="30"
                     Margin="3"
                     HorizontalAlignment="Center"
+                    Command="{Binding AddNewCategoryCommand}"
                     Content="Add new category" />
             </UniformGrid>
         </Grid>

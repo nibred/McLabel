@@ -1,4 +1,5 @@
-﻿using McLabel.Models;
+﻿using McLabel.Commands;
+using McLabel.Models;
 using McLabel.Services.Interfaces;
 using McLabel.Utils.Extensions;
 using McLabel.ViewModels.Base;
@@ -8,30 +9,33 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using System.Windows.Media.TextFormatting;
 using System.Xaml;
 
 namespace McLabel.ViewModels
 {
     internal class MainEditorViewModel : ViewModelBase
     {
+        #region private fields
         private readonly IFileService _xmlService;
         private ObservableCollection<Item> _items;
         private ObservableCollection<Category> _categories;
         private Item _selectedItem;
         private Category _selectedCategory;
 
-        private string[] _allProperties = new string[] 
-        { 
-            nameof(IsItemSelected), 
-            nameof(DateTimeNow), 
-            nameof(ExpiredDays1), 
-            nameof(ExpiredHours1), 
+        private string[] _allProperties = new string[]
+        {
+            nameof(IsItemSelected),
+            nameof(DateTimeNow),
+            nameof(ExpiredDays1),
+            nameof(ExpiredHours1),
             nameof(ExpiredMinutes1),
             nameof(ExpiredDays2),
             nameof(ExpiredHours2),
             nameof(ExpiredMinutes2),
-            nameof(DateTimeReady1), 
-            nameof(DateTimeReady2) 
+            nameof(DateTimeReady1),
+            nameof(DateTimeReady2)
         };
         private string[] _dateTimeProperties = new string[]
         {
@@ -39,12 +43,14 @@ namespace McLabel.ViewModels
             nameof(DateTimeReady1),
             nameof(DateTimeReady2)
         };
+        #endregion
 
+        #region observable collections
         public ObservableCollection<Item> Items
         {
             get
             {
-                if (_selectedCategory is null)
+                if (SelectedCategory is null)
                 {
                     AddColorsInItems();
                     return _items;
@@ -53,6 +59,9 @@ namespace McLabel.ViewModels
             }
         }
         public ObservableCollection<Category> Categories => _categories;
+        #endregion
+
+        #region public fields
         public bool IsItemSelected => SelectedItem != null;
         public Item SelectedItem
         {
@@ -128,7 +137,6 @@ namespace McLabel.ViewModels
                 Notify(ref _dateTimeProperties);
             }
         }
-
         public DateTime DateTimeReady1
         {
             get
@@ -147,6 +155,8 @@ namespace McLabel.ViewModels
                 return DateTimeNow;
             }
         }
+        #endregion
+
         public void AddItems(IEnumerable<Item> items) //TODO: one generic method (items/categories)?
         {
             foreach (var item in items)
@@ -162,6 +172,46 @@ namespace McLabel.ViewModels
             }
         }
 
+        #region commands
+        public ICommand AddNewItemCommand => new RelayCommand(o =>
+        {
+            _items.Add(new Item()
+            {
+                Category = SelectedCategory.Name,
+                Name = "New Item",
+                Color = SelectedCategory.Color,
+                Format = "",
+                Exp1Days = "0",
+                Exp1Hours = "0",
+                Exp1Message = "",
+                Exp1Minutes = "0",
+                Exp2Days = "0",
+                Exp2Hours = "0",
+                Exp2Message = "",
+                Exp2Minutes = "0",
+                Line1st = "",
+                Line2nd = "Item"
+            });
+            OnPropertyChanged(nameof(Items));
+        }, o => SelectedCategory != null);
+
+        public ICommand AddNewCategoryCommand => new RelayCommand(o =>
+        {
+            Categories.Add(new Category()
+            {
+                Name = "New category",
+                Color = "#aabbcc",
+                Printer = "",
+                PrintTemplate = ""
+            });
+        });
+        #endregion
+        public MainEditorViewModel(IFileService xmlService)
+        {
+            _xmlService = xmlService;
+            _items = new ObservableCollection<Item>();
+            _categories = new ObservableCollection<Category>();
+        }
         private DateTime RecalculateDateTime(string days, string hours, string minutes)
         {
             if (!Double.TryParse(days, out var d) ||
@@ -177,12 +227,6 @@ namespace McLabel.ViewModels
             {
                 return DateTimeNow;
             }
-        }
-        public MainEditorViewModel(IFileService xmlService)
-        {
-            _xmlService = xmlService;
-            _items = new ObservableCollection<Item>();
-            _categories = new ObservableCollection<Category>();
         }
         public MainEditorViewModel() : base() // design time constructor
         {

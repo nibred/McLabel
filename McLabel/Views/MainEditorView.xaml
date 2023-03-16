@@ -35,6 +35,10 @@
                                 <Button
                                     x:Name="delBtn"
                                     Grid.Column="1"
+                                    Command="{Binding DataContext.RemoveElementCommand,
+                                                      RelativeSource={RelativeSource AncestorType=UserControl,
+                                                                                     AncestorLevel=1}}"
+                                    CommandParameter="{Binding}"
                                     Content="Delete"
                                     Visibility="Collapsed" />
                                 <TextBlock

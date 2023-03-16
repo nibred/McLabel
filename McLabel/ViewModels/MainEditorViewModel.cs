@@ -194,7 +194,6 @@ namespace McLabel.ViewModels
             });
             OnPropertyChanged(nameof(Items));
         }, o => SelectedCategory != null);
-
         public ICommand AddNewCategoryCommand => new RelayCommand(o =>
         {
             Categories.Add(new Category()
@@ -205,7 +204,21 @@ namespace McLabel.ViewModels
                 PrintTemplate = ""
             });
         });
+        public ICommand RemoveElementCommand => new RelayCommand(o =>
+        {
+            if (o is Item)
+            {
+                _items.Remove(o as Item);
+                OnPropertyChanged(nameof(Items));
+            }
+            else
+            {
+                _categories.Remove(o as Category);
+                OnPropertyChanged(nameof(Categories));
+            }
+        });
         #endregion
+
         public MainEditorViewModel(IFileService xmlService)
         {
             _xmlService = xmlService;

@@ -32,7 +32,16 @@ namespace McLabel.ViewModels
             }
         }
         public ObservableCollection<Category> Categories => _categories;
-        public Item SelectedItem { get => _selectedItem; set => Set(ref _selectedItem, value); }
+        public bool IsItemSelected => SelectedItem != null;
+        public Item SelectedItem
+        { 
+            get => _selectedItem;
+            set
+            {
+                Set(ref _selectedItem, value);
+                OnPropertyChanged(nameof(IsItemSelected));
+            }
+        }
         public Category SelectedCategory
         {
             get => _selectedCategory;

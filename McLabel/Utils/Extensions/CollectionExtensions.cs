@@ -9,21 +9,16 @@ namespace McLabel.Utils.Extensions
 {
     internal static class CollectionExtensions
     {
-        public static bool IsEmpty<T>(this IEnumerable<T> sequence)
+        public static void AddRange<T>(this ObservableCollection<T> collection, IEnumerable<T> sequence)
         {
-            return !sequence.Any();
-        }
-
-        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> sequence)
-        {
-            ObservableCollection<T> collection = new ObservableCollection<T>();
-            if (sequence is null)
-                return null;
-            foreach (var item in sequence)
+            foreach (T item in sequence)
             {
                 collection.Add(item);
             }
-            return collection;
+        }
+        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> sequence)
+        {
+            return new ObservableCollection<T>(sequence);
         }
     }
 }

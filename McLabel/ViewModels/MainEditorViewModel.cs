@@ -7,10 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media.TextFormatting;
 using System.Xaml;
 
 namespace McLabel.ViewModels
@@ -46,30 +46,20 @@ namespace McLabel.ViewModels
         #endregion
 
         #region observable collections
-        public ObservableCollection<Item> Items
-        {
-            get
-            {
-                if (SelectedCategory is null)
-                {
-                    AddColorsInItems();
-                    return _items;
-                }
-                return _items.Where(x => x.Category == SelectedCategory.Name).Select(x => { x.Color = SelectedCategory.Color; return x; }).ToObservableCollection();
-            }
-        }
-        public ObservableCollection<Category> Categories => _categories;
+        public ObservableCollection<Category> Categories { get => _categories; set => Set(ref _categories, value); }
         #endregion
 
-        #region public fields
+        #region properties
         public ushort FontSize => 16;
         public bool IsItemSelected => SelectedItem != null;
+        public bool IsCategorySelected => SelectedCategory != null;
         public Item SelectedItem
         {
             get => _selectedItem;
             set
             {
                 Set(ref _selectedItem, value);
+                OnPropertyChanged(nameof(IsItemSelected));
                 Notify(ref _allProperties);
             }
         }
@@ -79,14 +69,17 @@ namespace McLabel.ViewModels
             set
             {
                 Set(ref _selectedCategory, value);
-                OnPropertyChanged(nameof(Items));
+                foreach (var item in _selectedCategory.Items)
+                {
+                    item.Color = _selectedCategory.Color;
+                }
             }
         }
         public DateTime DateTimeNow => DateTime.Now;
 
         public string ExpiredDays1
         {
-            get => IsItemSelected ? SelectedItem.Exp1Days : "0";
+            get => IsItemSelected ? SelectedItem.Exp1Days : string.Empty;
             set
             {
                 SelectedItem.Exp1Days = value;
@@ -95,7 +88,7 @@ namespace McLabel.ViewModels
         }
         public string ExpiredHours1
         {
-            get => IsItemSelected ? SelectedItem.Exp1Hours : "0";
+            get => IsItemSelected ? SelectedItem.Exp1Hours : string.Empty;
             set
             {
                 SelectedItem.Exp1Hours = value;
@@ -104,7 +97,7 @@ namespace McLabel.ViewModels
         }
         public string ExpiredMinutes1
         {
-            get => IsItemSelected ? SelectedItem.Exp1Minutes : "0";
+            get => IsItemSelected ? SelectedItem.Exp1Minutes : string.Empty;
             set
             {
                 SelectedItem.Exp1Minutes = value;
@@ -113,7 +106,7 @@ namespace McLabel.ViewModels
         }
         public string ExpiredDays2
         {
-            get => IsItemSelected ? SelectedItem.Exp2Days : "0";
+            get => IsItemSelected ? SelectedItem.Exp2Days : string.Empty;
             set
             {
                 SelectedItem.Exp2Days = value;
@@ -122,7 +115,7 @@ namespace McLabel.ViewModels
         }
         public string ExpiredHours2
         {
-            get => IsItemSelected ? SelectedItem.Exp2Hours : "0";
+            get => IsItemSelected ? SelectedItem.Exp2Hours : string.Empty;
             set
             {
                 SelectedItem.Exp2Hours = value;
@@ -131,7 +124,7 @@ namespace McLabel.ViewModels
         }
         public string ExpiredMinutes2
         {
-            get => IsItemSelected ? SelectedItem.Exp2Minutes : "0";
+            get => IsItemSelected ? SelectedItem.Exp2Minutes : string.Empty;
             set
             {
                 SelectedItem.Exp2Minutes = value;
@@ -158,25 +151,10 @@ namespace McLabel.ViewModels
         }
         #endregion
 
-        public void AddItems(IEnumerable<Item> items) //TODO: one generic method (items/categories)?
-        {
-            foreach (var item in items)
-            {
-                _items.Add(item);
-            }
-        }
-        public void AddCategories(IEnumerable<Category> categories)
-        {
-            foreach (var category in categories)
-            {
-                _categories.Add(category);
-            }
-        }
-
         #region commands
         public ICommand AddNewItemCommand => new RelayCommand(o =>
         {
-            _items.Add(new Item()
+            SelectedCategory.Items.Add(new Item()
             {
                 Category = SelectedCategory.Name,
                 Name = "New Item",
@@ -193,45 +171,57 @@ namespace McLabel.ViewModels
                 Line1st = "",
                 Line2nd = "Item"
             });
-            OnPropertyChanged(nameof(Items));
         }, o => SelectedCategory != null);
         public ICommand AddNewCategoryCommand => new RelayCommand(o =>
         {
             Categories.Add(new Category()
             {
                 Name = "New category",
-                Color = "#aabbcc",
+                Color = $"{GenerateRandomColor()}",
                 Printer = "",
-                PrintTemplate = ""
+                PrintTemplate = "",
+                Items = new List<Item>()
             });
         });
         public ICommand RemoveElementCommand => new RelayCommand(o =>
         {
             if (o is Item)
             {
-                _items.Remove(o as Item);
-                OnPropertyChanged(nameof(Items));
+                SelectedCategory.Items.Remove(o as Item);
             }
             else
             {
-                _categories.Remove(o as Category);
-                OnPropertyChanged(nameof(Categories));
+                Categories.Remove(o as Category);
             }
         });
+        public ICommand SaveCommand => new RelayCommand(o =>
+        {
+
+        }, o => Categories.Any());
+        public ICommand GetRandomColorCommand => new RelayCommand(o =>
+        {
+            string color = GenerateRandomColor();
+            SelectedCategory.Color = color;
+            OnPropertyChanged(nameof(SelectedCategory));
+            OnPropertyChanged(nameof(Categories));
+        }, o => IsCategorySelected);
         #endregion
+
+        public void AddCategories(IEnumerable<Category> categories) => Categories.AddRange(categories);
 
         public MainEditorViewModel(IFileService xmlService)
         {
             _xmlService = xmlService;
-            _items = new ObservableCollection<Item>();
-            _categories = new ObservableCollection<Category>();
+            Categories = new ObservableCollection<Category>();
         }
         private DateTime RecalculateDateTime(string days, string hours, string minutes)
         {
-            if (!Double.TryParse(days, out var d) ||
-                !Double.TryParse(hours, out var h) ||
-                !Double.TryParse(minutes, out var m))
-                return DateTimeNow;
+            if (!Double.TryParse(days, out var d))
+                d = 0;
+            if (!Double.TryParse(hours, out var h))
+                h = 0;
+            if (!Double.TryParse(minutes, out var m))
+                m = 0;
             try
             {
                 DateTime newDateTime = DateTimeNow.AddDays(d).AddHours(h).AddMinutes(m);
@@ -244,10 +234,10 @@ namespace McLabel.ViewModels
         }
         public MainEditorViewModel() : base() // design time constructor
         {
-            _items = new ObservableCollection<Item>();
-            for (int i = 0; i < 40; i++)
+            Categories = new ObservableCollection<Category>();
+            for (int i = 0; i < 10; i++)
             {
-                Items.Add(new Item
+                SelectedCategory.Items.Add(new Item
                 {
                     Name = $"Item {i + 1}",
                     Category = "chleb",
@@ -257,17 +247,16 @@ namespace McLabel.ViewModels
                     Exp1Minutes = "0",
                     Exp2Message = "koniec",
                     Exp2Days = "2",
-                    Line1st = $"Item {i}",
+                    Line1st = $"Item {i + 1}",
                     Line2nd = "Line2nd",
                     Format = ""
                 });
             }
-            _categories = new ObservableCollection<Category>();
             for (int i = 0; i < 7; i++)
             {
                 Categories.Add(new Category
                 {
-                    Color = $"#{RandomColorGenerator()}",
+                    Color = $"{GenerateRandomColor()}",
                     Name = $"Category {i + 1}",
                     Printer = "",
                     PrintTemplate = ""
@@ -277,22 +266,22 @@ namespace McLabel.ViewModels
 
         private void AddColorsInItems()
         {
-            if (!_items.IsEmpty() && !_categories.IsEmpty())
+            if (SelectedCategory.Items.Any() && Categories.Any())
             {
-                foreach ((Item item, Category category) in _items
-                    .SelectMany(item => _categories
-                    .Where(category => item.Category == category.Name)
-                    .Select(category => (item, category))))
+                foreach ((Item item, Category category) in SelectedCategory.Items
+                    .SelectMany(item => Categories
+                        .Where(category => item.Category == category.Name)
+                        .Select(category => (item, category))))
                 {
                     item.Color = category.Color;
                 }
             }
         }
-        private string RandomColorGenerator() // only for design time
+        private string GenerateRandomColor()
         {
             Random random = new Random();
             string chars = "123567890abcdef";
-            string result = string.Empty;
+            string result = "#";
             for (int i = 0; i < 6; i++)
                 result += chars[random.Next(chars.Length)];
             return result;

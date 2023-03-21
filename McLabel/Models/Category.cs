@@ -12,15 +12,6 @@ namespace McLabel.Models
         public string Color { get; set; }
         public string PrintTemplate { get; set; }
         public string Printer { get; set; }
-        public override bool Equals(object obj)
-        {
-            Category category = obj as Category;
-            if (category is null) return false;
-            return Name == category.Name;
-        }
-        public override int GetHashCode()
-        {
-            return Name.GetHashCode();
-        }
+        public List<Item> Items { get; set; }
     }
 }

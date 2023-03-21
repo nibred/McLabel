@@ -39,7 +39,7 @@
                                                       RelativeSource={RelativeSource AncestorType=UserControl,
                                                                                      AncestorLevel=1}}"
                                     CommandParameter="{Binding}"
-                                    Content="Delete"
+                                    Content="Del"
                                     Visibility="Collapsed" />
                                 <TextBlock
                                     x:Name="text"
@@ -87,6 +87,7 @@
                 Width="100"
                 Height="30"
                 Margin="10,3"
+                Command="{Binding SaveCommand}"
                 Content="Save" />
             <UniformGrid
                 Grid.Column="0"
@@ -119,11 +120,12 @@
                 Grid.Column="0"
                 Width="200"
                 Height="200"
-                Margin="10"
+                Margin="20"
                 Background="White"
                 BorderBrush="Black"
                 BorderThickness="1"
-                CornerRadius="10">
+                CornerRadius="10"
+                SnapsToDevicePixels="True">
                 <Grid Margin="10,5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -144,7 +146,8 @@
                         Grid.ColumnSpan="3"
                         Panel.ZIndex="100"
                         Background="White"
-                        Visibility="Collapsed">
+                        Visibility="{Binding IsItemSelected,
+                                             Converter={StaticResource ReversedBooleanConverter}}">
                         <TextBlock
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
@@ -259,7 +262,7 @@
                         FontSize="{Binding FontSize}"
                         Text="{Binding DateTimeReady2,
                                        FallbackValue='5:12',
-                                       StringFormat=HH:mm}"
+                                       StringFormat=H:mm}"
                         TextAlignment="Center"
                         TextWrapping="NoWrap" />
                     <TextBlock
@@ -268,7 +271,7 @@
                         Grid.Column="3"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
-                        FontSize="18"
+                        FontSize="24"
                         FontWeight="Bold"
                         SnapsToDevicePixels="True"
                         Text="{Binding SelectedItem.Line1st,
@@ -289,6 +292,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
@@ -380,8 +384,7 @@
                     DisplayMemberPath="Name"
                     IsEnabled="{Binding IsItemSelected}"
                     ItemsSource="{Binding Categories}"
-                    Text="{Binding SelectedItem.Category,
-                                   UpdateSourceTrigger=PropertyChanged}" />
+                    SelectedValue="{Binding SelectedCategory}" />
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="2"
@@ -466,6 +469,32 @@
                     IsEnabled="{Binding IsItemSelected}"
                     Text="{Binding SelectedItem.Exp2Message,
                                    UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Margin="10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="Category:" />
+                <TextBox
+                    Grid.Row="6"
+                    Grid.Column="1"
+                    Margin="3"
+                    Text="{Binding SelectedCategory.Color,
+                                   UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock
+                    Grid.Row="6"
+                    Grid.Column="2"
+                    Margin="10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="Color:" />
+                <Button
+                    Grid.Row="6"
+                    Grid.Column="3"
+                    Margin="3"
+                    Background="{Binding SelectedCategory.Color}"
+                    Command="{Binding GetRandomColorCommand}" />
             </Grid>
         </Grid>
         <Border
@@ -480,7 +509,7 @@
                 Background="Transparent"
                 BorderThickness="0"
                 ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
-                ItemsSource="{Binding Items}"
+                ItemsSource="{Binding SelectedCategory.Items}"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 SelectedItem="{Binding SelectedItem}"
@@ -497,56 +526,24 @@
             Margin="10"
             Background="#FFEAEAEA"
             CornerRadius="7">
-            <Grid Grid.Row="3" Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Margin="3"
-                    Text="Name:" />
-                <TextBox
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Margin="3" />
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Margin="3"
-                    Text="Color:" />
-                <Button
-                    Grid.Column="3"
-                    Margin="3"
-                    Background="#aa26cc" />
-                <ListBox
-                    Grid.Row="1"
-                    Grid.ColumnSpan="4"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    DisplayMemberPath="Name"
-                    ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
-                    ItemsSource="{Binding Categories}"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                    SelectedItem="{Binding SelectedCategory}"
-                    SelectionMode="Single">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Rows="1" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
-            </Grid>
+            <ListBox
+                Margin="5"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="Transparent"
+                BorderThickness="0"
+                ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
+                ItemsSource="{Binding Categories}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                SelectedItem="{Binding SelectedCategory}"
+                SelectionMode="Single">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
         </Border>
     </Grid>
 </UserControl>

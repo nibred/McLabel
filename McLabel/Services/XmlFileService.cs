@@ -14,17 +14,16 @@ namespace McLabel.Services
     {
         private readonly FileDialogService _fileDialogService;
         private List<XmlDocument> _validXmlDocuments;
-        private List<Item> _items;
-        private HashSet<Category> _categories;
-        public List<Item> Items => _items;
-        public HashSet<Category> Categories => _categories;
+        private List<Category> _categories;
+        private Dictionary<string, List<Item>> _itemsDictionary;
+        public List<Category> Categories => _categories;
 
         public XmlFileService(FileDialogService fileDialogService)
         {
             _fileDialogService = fileDialogService;
             _validXmlDocuments = new List<XmlDocument>();
-            _items = new List<Item>();
-            _categories = new HashSet<Category>();
+            _categories = new List<Category>();
+            _itemsDictionary = new Dictionary<string, List<Item>>();
         }
         public bool OpenXmlFiles()
         {
@@ -32,8 +31,8 @@ namespace McLabel.Services
             {
                 if (IsValidFiles(selectedXmlFiles))
                 {
-                    LoadItems();
                     LoadCategories();
+                    LoadItems();
                     return true;
                 }
             }
@@ -46,7 +45,7 @@ namespace McLabel.Services
                 var items = xmlDocument.SelectNodes("LabelDataFile/Labels/Item");
                 foreach (XmlNode item in items)
                 {
-                    _items.Add(new Item
+                    Item newItem = new Item
                     {
                         Name = item["Półprodukty"].InnerText,
                         Category = item["AssignedCategory"].InnerText,
@@ -61,24 +60,35 @@ namespace McLabel.Services
                         Format = item["Format"].InnerText,
                         Line1st = item["linia_1st"].InnerText,
                         Line2nd = item["linia_2nd"].InnerText
-                    });
+                    };
+                    foreach (var category in _categories.Where(c => c.Name == newItem.Category))
+                    {
+                        category.Items.Add(newItem);
+                    }
                 }
             }
         }
         private void LoadCategories()
         {
+            List<string> categoryNames = new List<string>();
+            categoryNames.Capacity = 10;
             foreach (XmlDocument xmlDocument in _validXmlDocuments)
             {
                 var categories = xmlDocument.SelectNodes("LabelDataFile/Categories/AssignedCategory");
                 foreach (XmlNode category in categories)
                 {
+                    string categoryName = category["Name"].InnerText;
+                    if (categoryNames.Contains(categoryName))
+                        continue;
                     _categories.Add(new Category
                     {
                         Name = category["Name"].InnerText,
                         Color = category["Color"].InnerText,
                         PrintTemplate = category["PrintTemplate"].InnerText,
-                        Printer = category["Printer"].InnerText
+                        Printer = category["Printer"].InnerText,
+                        Items = new List<Item>()
                     });
+                    categoryNames.Add(categoryName);
                 }
             }
         }
@@ -98,7 +108,7 @@ namespace McLabel.Services
                     _validXmlDocuments.Add(document);
                 }
             }
-            return !_validXmlDocuments.IsEmpty();
+            return _validXmlDocuments.Any();
         }
     }
 }

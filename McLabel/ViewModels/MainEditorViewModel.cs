@@ -47,6 +47,13 @@ namespace McLabel.ViewModels
 
         #region observable collections
         public ObservableCollection<Category> Categories { get => _categories; set => Set(ref _categories, value); }
+        public ObservableCollection<Item> Items => SelectedCategory?.Items?
+            .Select(i => 
+            { 
+                i.Color = SelectedCategory?.Color; 
+                return i; 
+            })
+            .ToObservableCollection();
         #endregion
 
         #region properties
@@ -69,10 +76,7 @@ namespace McLabel.ViewModels
             set
             {
                 Set(ref _selectedCategory, value);
-                foreach (var item in _selectedCategory.Items)
-                {
-                    item.Color = _selectedCategory.Color;
-                }
+                OnPropertyChanged(nameof(Items));
             }
         }
         public DateTime DateTimeNow => DateTime.Now;
@@ -171,6 +175,7 @@ namespace McLabel.ViewModels
                 Line1st = "",
                 Line2nd = "Item"
             });
+            OnPropertyChanged(nameof(Items));
         }, o => SelectedCategory != null);
         public ICommand AddNewCategoryCommand => new RelayCommand(o =>
         {
@@ -193,6 +198,7 @@ namespace McLabel.ViewModels
             {
                 Categories.Remove(o as Category);
             }
+            OnPropertyChanged(nameof(Items));
         });
         public ICommand SaveCommand => new RelayCommand(o =>
         {
@@ -202,8 +208,12 @@ namespace McLabel.ViewModels
         {
             string color = GenerateRandomColor();
             SelectedCategory.Color = color;
+            foreach(var item in SelectedCategory.Items)
+            {
+                item.Color = color;
+            }
             OnPropertyChanged(nameof(SelectedCategory));
-            OnPropertyChanged(nameof(Categories));
+            OnPropertyChanged(nameof(Items));
         }, o => IsCategorySelected);
         #endregion
 
@@ -237,7 +247,7 @@ namespace McLabel.ViewModels
             Categories = new ObservableCollection<Category>();
             for (int i = 0; i < 10; i++)
             {
-                SelectedCategory.Items.Add(new Item
+                Items.Add(new Item
                 {
                     Name = $"Item {i + 1}",
                     Category = "chleb",
@@ -261,20 +271,6 @@ namespace McLabel.ViewModels
                     Printer = "",
                     PrintTemplate = ""
                 });
-            }
-        }
-
-        private void AddColorsInItems()
-        {
-            if (SelectedCategory.Items.Any() && Categories.Any())
-            {
-                foreach ((Item item, Category category) in SelectedCategory.Items
-                    .SelectMany(item => Categories
-                        .Where(category => item.Category == category.Name)
-                        .Select(category => (item, category))))
-                {
-                    item.Color = category.Color;
-                }
             }
         }
         private string GenerateRandomColor()

@@ -25,7 +25,8 @@
                             Height="45"
                             Margin="3,5"
                             Background="{Binding Color,
-                                                 TargetNullValue=#aabbcc}"
+                                                 UpdateSourceTrigger=PropertyChanged,
+                                                 TargetNullValue=#abcdef}"
                             CornerRadius="10">
                             <Grid Margin="5">
                                 <Grid.ColumnDefinitions>
@@ -494,7 +495,9 @@
                     Grid.Column="3"
                     Margin="3"
                     Background="{Binding SelectedCategory.Color}"
-                    Command="{Binding GetRandomColorCommand}" />
+                    Command="{Binding GetRandomColorCommand}"
+                    Content="{Binding SelectedCategory.Color}"
+                    ContentStringFormat="Click to change ({0})" />
             </Grid>
         </Grid>
         <Border
@@ -509,7 +512,7 @@
                 Background="Transparent"
                 BorderThickness="0"
                 ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
-                ItemsSource="{Binding SelectedCategory.Items}"
+                ItemsSource="{Binding Items}"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 SelectedItem="{Binding SelectedItem}"

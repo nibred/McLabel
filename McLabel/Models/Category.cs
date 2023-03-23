@@ -1,17 +1,24 @@
-﻿using System;
+﻿using McLabel.ViewModels.Base;
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace McLabel.Models
 {
-    internal class Category
+    internal class Category : NotifyBase
     {
-        public string Name { get; set; }
-        public string Color { get; set; }
+        private string _color;
+        private string _name;
+        private List<Item> _items;
+        public string Name { get => _name; set => Set(ref _name, value); }
+        public string Color { get => _color; set => Set(ref _color, value); }
+        public List<Item> Items { get => _items; set => Set(ref _items, value); }
         public string PrintTemplate { get; set; }
         public string Printer { get; set; }
-        public List<Item> Items { get; set; }
     }
 }

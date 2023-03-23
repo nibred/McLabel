@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace McLabel.ViewModels.Base
 {
-    internal class ViewModelBase : INotifyPropertyChanged
+    internal class NotifyBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => 

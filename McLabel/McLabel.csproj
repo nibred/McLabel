@@ -221,11 +221,12 @@
     <Compile Include="Services\Interfaces\IFileService.cs" />
     <Compile Include="Services\ViewNavigationService.cs" />
     <Compile Include="Services\XmlFileService.cs" />
+    <Compile Include="Utils\Converters\DateTimeConverter.cs" />
     <Compile Include="Utils\Converters\ReversedBooleanToVisibiltyConverter.cs" />
     <Compile Include="Utils\Extensions\CollectionExtensions.cs" />
     <Compile Include="Utils\Registrators\ServiceRegistrator.cs" />
     <Compile Include="Utils\Registrators\ViewModelRegistrator.cs" />
-    <Compile Include="ViewModels\Base\ViewModelBase.cs" />
+    <Compile Include="ViewModels\Base\NotifyBase.cs" />
     <Compile Include="ViewModels\Base\ViewModelLocator.cs" />
     <Compile Include="ViewModels\MainEditorViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

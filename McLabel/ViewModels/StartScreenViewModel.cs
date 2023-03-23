@@ -12,7 +12,7 @@ using System.Xaml;
 
 namespace McLabel.ViewModels
 {
-    internal class StartScreenViewModel : ViewModelBase
+    internal class StartScreenViewModel : NotifyBase
     {
         public ICommand OpenMainEditorCommand { get; }
         public ICommand SelectFilesCommand { get; }

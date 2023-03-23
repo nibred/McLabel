@@ -6,7 +6,9 @@ using McLabel.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,49 +17,28 @@ using System.Xaml;
 
 namespace McLabel.ViewModels
 {
-    internal class MainEditorViewModel : ViewModelBase
+    internal class MainEditorViewModel : NotifyBase
     {
         #region private fields
         private readonly IFileService _xmlService;
-        private ObservableCollection<Item> _items;
-        private ObservableCollection<Category> _categories;
         private Item _selectedItem;
         private Category _selectedCategory;
-
-        private string[] _allProperties = new string[]
-        {
-            nameof(IsItemSelected),
-            nameof(DateTimeNow),
-            nameof(ExpiredDays1),
-            nameof(ExpiredHours1),
-            nameof(ExpiredMinutes1),
-            nameof(ExpiredDays2),
-            nameof(ExpiredHours2),
-            nameof(ExpiredMinutes2),
-            nameof(DateTimeReady1),
-            nameof(DateTimeReady2)
-        };
-        private string[] _dateTimeProperties = new string[]
-        {
-            nameof(DateTimeNow),
-            nameof(DateTimeReady1),
-            nameof(DateTimeReady2)
-        };
         #endregion
 
         #region observable collections
-        public ObservableCollection<Category> Categories { get => _categories; set => Set(ref _categories, value); }
-        public ObservableCollection<Item> Items => SelectedCategory?.Items?
-            .Select(i => 
-            { 
-                i.Color = SelectedCategory?.Color; 
-                return i; 
-            })
-            .ToObservableCollection();
+        public ObservableCollection<Category> Categories { get; private set; }
+        public ObservableCollection<Item> Items => SelectedCategory?.Items
+            .Select(item =>
+            {
+                item.Color = SelectedCategory.Color;
+                return item;
+            }).ToObservableCollection();
         #endregion
 
         #region properties
         public ushort FontSize => 16;
+        public DateTime DateTimeNow => DateTime.Now;
+        public void AddCategories(IEnumerable<Category> categories) => Categories.AddRange(categories);
         public bool IsItemSelected => SelectedItem != null;
         public bool IsCategorySelected => SelectedCategory != null;
         public Item SelectedItem
@@ -67,7 +48,7 @@ namespace McLabel.ViewModels
             {
                 Set(ref _selectedItem, value);
                 OnPropertyChanged(nameof(IsItemSelected));
-                Notify(ref _allProperties);
+                OnPropertyChanged(nameof(DateTimeNow));
             }
         }
         public Category SelectedCategory
@@ -77,80 +58,6 @@ namespace McLabel.ViewModels
             {
                 Set(ref _selectedCategory, value);
                 OnPropertyChanged(nameof(Items));
-            }
-        }
-        public DateTime DateTimeNow => DateTime.Now;
-
-        public string ExpiredDays1
-        {
-            get => IsItemSelected ? SelectedItem.Exp1Days : string.Empty;
-            set
-            {
-                SelectedItem.Exp1Days = value;
-                Notify(ref _dateTimeProperties);
-            }
-        }
-        public string ExpiredHours1
-        {
-            get => IsItemSelected ? SelectedItem.Exp1Hours : string.Empty;
-            set
-            {
-                SelectedItem.Exp1Hours = value;
-                Notify(ref _dateTimeProperties);
-            }
-        }
-        public string ExpiredMinutes1
-        {
-            get => IsItemSelected ? SelectedItem.Exp1Minutes : string.Empty;
-            set
-            {
-                SelectedItem.Exp1Minutes = value;
-                Notify(ref _dateTimeProperties);
-            }
-        }
-        public string ExpiredDays2
-        {
-            get => IsItemSelected ? SelectedItem.Exp2Days : string.Empty;
-            set
-            {
-                SelectedItem.Exp2Days = value;
-                Notify(ref _dateTimeProperties);
-            }
-        }
-        public string ExpiredHours2
-        {
-            get => IsItemSelected ? SelectedItem.Exp2Hours : string.Empty;
-            set
-            {
-                SelectedItem.Exp2Hours = value;
-                Notify(ref _dateTimeProperties);
-            }
-        }
-        public string ExpiredMinutes2
-        {
-            get => IsItemSelected ? SelectedItem.Exp2Minutes : string.Empty;
-            set
-            {
-                SelectedItem.Exp2Minutes = value;
-                Notify(ref _dateTimeProperties);
-            }
-        }
-        public DateTime DateTimeReady1
-        {
-            get
-            {
-                if (IsItemSelected)
-                    return RecalculateDateTime(SelectedItem.Exp1Days, SelectedItem.Exp1Hours, SelectedItem.Exp1Minutes);
-                return DateTimeNow;
-            }
-        }
-        public DateTime DateTimeReady2
-        {
-            get
-            {
-                if (IsItemSelected)
-                    return RecalculateDateTime(SelectedItem.Exp2Days, SelectedItem.Exp2Hours, SelectedItem.Exp2Minutes);
-                return DateTimeNow;
             }
         }
         #endregion
@@ -208,16 +115,11 @@ namespace McLabel.ViewModels
         {
             string color = GenerateRandomColor();
             SelectedCategory.Color = color;
-            foreach(var item in SelectedCategory.Items)
-            {
-                item.Color = color;
-            }
-            OnPropertyChanged(nameof(SelectedCategory));
             OnPropertyChanged(nameof(Items));
         }, o => IsCategorySelected);
+
         #endregion
 
-        public void AddCategories(IEnumerable<Category> categories) => Categories.AddRange(categories);
 
         public MainEditorViewModel(IFileService xmlService)
         {
@@ -247,7 +149,7 @@ namespace McLabel.ViewModels
             Categories = new ObservableCollection<Category>();
             for (int i = 0; i < 10; i++)
             {
-                Items.Add(new Item
+                SelectedCategory.Items.Add(new Item
                 {
                     Name = $"Item {i + 1}",
                     Category = "chleb",

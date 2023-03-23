@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace McLabel.ViewModels
 {
-    internal class MainViewModel : ViewModelBase
+    internal class MainViewModel : NotifyBase
     {
         private readonly ViewNavigationService _viewNavigationService;
-        public ViewModelBase CurrentVM => _viewNavigationService.CurrentVM;
+        public NotifyBase CurrentVM => _viewNavigationService.CurrentVM;
         public MainViewModel(ViewNavigationService viewNavigationService, StartScreenViewModel startScreenViewModel)
         {
             _viewNavigationService = viewNavigationService;

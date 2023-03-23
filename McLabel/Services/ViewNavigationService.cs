@@ -9,8 +9,8 @@ namespace McLabel.Services
 {
     internal class ViewNavigationService
     {
-        private ViewModelBase _currentVM;
-        public ViewModelBase CurrentVM
+        private NotifyBase _currentVM;
+        public NotifyBase CurrentVM
         {
             get => _currentVM; //TODO: check null reference
             set

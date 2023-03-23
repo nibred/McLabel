@@ -16,6 +16,7 @@
     <UserControl.Resources>
         <conv:ReversedBooleanToVisibiltyConverter x:Key="ReversedBooleanConverter" />
         <conv:DateTimeConverter x:Key="DateTimeConverter" />
+        <conv:StringVisibilityConverter x:Key="StringVisibilityConverter" />
         <Style x:Key="ListBoxItemStyle1" TargetType="{x:Type ListBoxItem}">
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="Template">
@@ -200,6 +201,7 @@
                         TextAlignment="Center"
                         TextWrapping="NoWrap" />
                     <TextBlock
+                        x:Name="textExp1"
                         Grid.Row="3"
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Left"
@@ -217,7 +219,10 @@
                         VerticalAlignment="Center"
                         FontSize="{Binding FontSize}"
                         TextAlignment="Center"
-                        TextWrapping="NoWrap">
+                        TextWrapping="NoWrap"
+                        Visibility="{Binding ElementName=textExp1,
+                                             Path=Text,
+                                             Converter={StaticResource StringVisibilityConverter}}">
                         <TextBlock.Text>
                             <MultiBinding
                                 Converter="{StaticResource DateTimeConverter}"
@@ -246,7 +251,10 @@
                         VerticalAlignment="Center"
                         FontSize="{Binding FontSize}"
                         TextAlignment="Center"
-                        TextWrapping="NoWrap">
+                        TextWrapping="NoWrap"
+                        Visibility="{Binding ElementName=textExp1,
+                                             Path=Text,
+                                             Converter={StaticResource StringVisibilityConverter}}">
                         <TextBlock.Text>
                             <MultiBinding
                                 Converter="{StaticResource DateTimeConverter}"
@@ -269,6 +277,7 @@
                         </TextBlock.Text>
                     </TextBlock>
                     <TextBlock
+                        x:Name="textExp2"
                         Grid.Row="5"
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Left"
@@ -286,7 +295,10 @@
                         VerticalAlignment="Center"
                         FontSize="{Binding FontSize}"
                         TextAlignment="Center"
-                        TextWrapping="NoWrap">
+                        TextWrapping="NoWrap"
+                        Visibility="{Binding ElementName=textExp2,
+                                             Path=Text,
+                                             Converter={StaticResource StringVisibilityConverter}}">
                         <TextBlock.Text>
                             <MultiBinding
                                 Converter="{StaticResource DateTimeConverter}"
@@ -315,7 +327,10 @@
                         VerticalAlignment="Center"
                         FontSize="{Binding FontSize}"
                         TextAlignment="Center"
-                        TextWrapping="NoWrap">
+                        TextWrapping="NoWrap"
+                        Visibility="{Binding ElementName=textExp2,
+                                             Path=Text,
+                                             Converter={StaticResource StringVisibilityConverter}}">
                         <TextBlock.Text>
                             <MultiBinding
                                 Converter="{StaticResource DateTimeConverter}"

@@ -1,5 +1,6 @@
 ﻿using McLabel.Commands;
 using McLabel.Models;
+using McLabel.Models.Interfaces;
 using McLabel.Services.Interfaces;
 using McLabel.Utils.Extensions;
 using McLabel.ViewModels.Base;
@@ -21,13 +22,13 @@ namespace McLabel.ViewModels
     {
         #region private fields
         private readonly IFileService _xmlService;
-        private Item _selectedItem;
-        private Category _selectedCategory;
+        private IItem _selectedItem;
+        private ICategory _selectedCategory;
         #endregion
 
         #region observable collections
-        public ObservableCollection<Category> Categories { get; private set; }
-        public ObservableCollection<Item> Items => SelectedCategory?.Items
+        public ObservableCollection<ICategory> Categories { get; private set; }
+        public ObservableCollection<IItem> Items => SelectedCategory?.Items
             .Select(item =>
             {
                 item.Color = SelectedCategory.Color;
@@ -38,10 +39,10 @@ namespace McLabel.ViewModels
         #region properties
         public ushort FontSize => 16;
         public DateTime DateTimeNow => DateTime.Now;
-        public void AddCategories(IEnumerable<Category> categories) => Categories.AddRange(categories);
+        public void AddCategories(ICollection<ICategory> categories) => Categories.AddRange(categories);
         public bool IsItemSelected => SelectedItem != null;
         public bool IsCategorySelected => SelectedCategory != null;
-        public Item SelectedItem
+        public IItem SelectedItem
         {
             get => _selectedItem;
             set
@@ -51,7 +52,7 @@ namespace McLabel.ViewModels
                 OnPropertyChanged(nameof(DateTimeNow));
             }
         }
-        public Category SelectedCategory
+        public ICategory SelectedCategory
         {
             get => _selectedCategory;
             set
@@ -92,7 +93,7 @@ namespace McLabel.ViewModels
                 Color = $"{GenerateRandomColor()}",
                 Printer = "",
                 PrintTemplate = "",
-                Items = new List<Item>()
+                Items = new List<IItem>()
             });
         });
         public ICommand RemoveElementCommand => new RelayCommand(o =>
@@ -109,7 +110,7 @@ namespace McLabel.ViewModels
         });
         public ICommand SaveCommand => new RelayCommand(o =>
         {
-
+            _xmlService.SaveXmlFile(Categories);
         }, o => Categories.Any());
         public ICommand GetRandomColorCommand => new RelayCommand(o =>
         {
@@ -124,29 +125,11 @@ namespace McLabel.ViewModels
         public MainEditorViewModel(IFileService xmlService)
         {
             _xmlService = xmlService;
-            Categories = new ObservableCollection<Category>();
-        }
-        private DateTime RecalculateDateTime(string days, string hours, string minutes)
-        {
-            if (!Double.TryParse(days, out var d))
-                d = 0;
-            if (!Double.TryParse(hours, out var h))
-                h = 0;
-            if (!Double.TryParse(minutes, out var m))
-                m = 0;
-            try
-            {
-                DateTime newDateTime = DateTimeNow.AddDays(d).AddHours(h).AddMinutes(m);
-                return newDateTime;
-            }
-            catch
-            {
-                return DateTimeNow;
-            }
+            Categories = new ObservableCollection<ICategory>();
         }
         public MainEditorViewModel() : base() // design time constructor
         {
-            Categories = new ObservableCollection<Category>();
+            Categories = new ObservableCollection<ICategory>();
             for (int i = 0; i < 10; i++)
             {
                 SelectedCategory.Items.Add(new Item

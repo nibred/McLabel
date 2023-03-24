@@ -7,23 +7,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using McLabel.Models.Interfaces;
 
 namespace McLabel.Services
 {
     internal class XmlFileService : IFileService
     {
+        private const string DEFAULT_XML_DATA = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" +
+            "<LabelDataFile><HeaderPC><AppVersion>2.0.5.1</AppVersion><MenuVersion>97284</MenuVersion><FileVersion>3.19</FileVersion></HeaderPC><HeaderPrinter>" +
+            "<CurrentFirmware>F 1.10.06</CurrentFirmware></HeaderPrinter><Shared><SubsectionTag1><Modify>false</Modify><CreationDate>5/21/2014</CreationDate></SubsectionTag1>" +
+            "<SubsectionTag2><ModifiedDate>4-26-2022</ModifiedDate><ModifiedBy>FST Ithaca-9700</ModifiedBy></SubsectionTag2><SupportedLabelFields><Półprodukty/><Categories/>" +
+            "<Exp1_dni/><Exp1_godzin/><Exp1_protokół/><Exp1_wiadomość/><Exp2_dni/><Exp2_godzin/><Exp2_protokół/><Exp2_wiadomość/><Format/><linia_1st/><linia_2nd/>" +
+            "</SupportedLabelFields></Shared><Categories/><Labels/></LabelDataFile>";
+        private const string BASE_NODE = "LabelDataFile";
+        private const string CATEGORY_NODE = "LabelDataFile/Categories";
+        private const string ITEM_NODE = "LabelDataFile/Labels";
+
         private readonly FileDialogService _fileDialogService;
         private List<XmlDocument> _validXmlDocuments;
-        private List<Category> _categories;
-        private Dictionary<string, List<Item>> _itemsDictionary;
-        public List<Category> Categories => _categories;
+        private ICollection<ICategory> _categories;
+        public ICollection<ICategory> Categories => _categories;
 
         public XmlFileService(FileDialogService fileDialogService)
         {
             _fileDialogService = fileDialogService;
             _validXmlDocuments = new List<XmlDocument>();
-            _categories = new List<Category>();
-            _itemsDictionary = new Dictionary<string, List<Item>>();
+            _categories = new List<ICategory>();
         }
         public bool OpenXmlFiles()
         {
@@ -38,11 +47,45 @@ namespace McLabel.Services
             }
             return false;
         }
+        public bool SaveXmlFile(ICollection<ICategory> categories)
+        {
+            XmlDocument document = CreateXmlFromDefault(categories);
+            if (_fileDialogService.SaveFile(document, out string path))
+            {
+                return true;
+            }
+            return false;
+        }
+        private XmlDocument CreateXmlFromDefault(ICollection<ICategory> categories)
+        {
+            XmlDocument document = new XmlDocument();
+            document.LoadXml(DEFAULT_XML_DATA);
+            XmlNode categoryBaseNode = document.SelectSingleNode(CATEGORY_NODE);
+            foreach (var category in categories)
+            {
+                XmlElement newCategory = document.CreateElement("AssignedCategory");
+                Dictionary<string, string> categoryNodes = new Dictionary<string, string>
+                {
+                    {"Name", category.Name },
+                    {"Color", category.Color },
+                    {"PrintTemplate", "" },
+                    {"Printer", "" }
+                };
+                foreach (KeyValuePair<string, string> node in categoryNodes)
+                {
+                    XmlNode newNode = document.CreateElement(node.Key);
+                    newNode.InnerText = node.Value;
+                    newCategory.AppendChild(newNode);
+                }
+                categoryBaseNode.AppendChild(newCategory);
+            }
+            return document;
+        }
         private void LoadItems()
         {
             foreach (XmlDocument xmlDocument in _validXmlDocuments)
             {
-                var items = xmlDocument.SelectNodes("LabelDataFile/Labels/Item");
+                var items = xmlDocument.SelectNodes($"{ITEM_NODE}/Item");
                 foreach (XmlNode item in items)
                 {
                     Item newItem = new Item
@@ -74,7 +117,7 @@ namespace McLabel.Services
             categoryNames.Capacity = 10;
             foreach (XmlDocument xmlDocument in _validXmlDocuments)
             {
-                var categories = xmlDocument.SelectNodes("LabelDataFile/Categories/AssignedCategory");
+                var categories = xmlDocument.SelectNodes($"{CATEGORY_NODE}/AssignedCategory");
                 foreach (XmlNode category in categories)
                 {
                     string categoryName = category["Name"].InnerText;
@@ -86,13 +129,12 @@ namespace McLabel.Services
                         Color = category["Color"].InnerText,
                         PrintTemplate = category["PrintTemplate"].InnerText,
                         Printer = category["Printer"].InnerText,
-                        Items = new List<Item>()
+                        Items = new List<IItem>()
                     });
                     categoryNames.Add(categoryName);
                 }
             }
         }
-
         private bool IsValidFiles(IEnumerable<string> xmlFiles)
         {
             _validXmlDocuments.Clear();
@@ -100,9 +142,9 @@ namespace McLabel.Services
             {
                 var document = new XmlDocument();
                 document.Load(xmlFile);
-                bool checkRootElement = document.DocumentElement?.Name == "LabelDataFile";
-                bool checkCategories = document.SelectNodes("LabelDataFile/Categories")?.Count > 0;
-                bool checkLabels = document.SelectNodes("LabelDataFile/Labels")?.Count > 0;
+                bool checkRootElement = document.DocumentElement?.Name == BASE_NODE;
+                bool checkCategories = document.SelectNodes(CATEGORY_NODE)?.Count > 0;
+                bool checkLabels = document.SelectNodes(ITEM_NODE)?.Count > 0;
                 if (checkRootElement && checkCategories && checkLabels)
                 {
                     _validXmlDocuments.Add(document);

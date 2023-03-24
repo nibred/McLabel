@@ -1,4 +1,5 @@
-﻿using McLabel.ViewModels.Base;
+﻿using McLabel.Models.Interfaces;
+using McLabel.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -10,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace McLabel.Models
 {
-    internal class Category : NotifyBase
+    internal class Category : NotifyBase, ICategory
     {
         private string _color;
         private string _name;
-        private List<Item> _items;
+        private ICollection<IItem> _items;
         public string Name { get => _name; set => Set(ref _name, value); }
         public string Color { get => _color; set => Set(ref _color, value); }
-        public List<Item> Items { get => _items; set => Set(ref _items, value); }
+        public ICollection<IItem> Items { get => _items; set => Set(ref _items, value); }
         public string PrintTemplate { get; set; }
         public string Printer { get; set; }
     }

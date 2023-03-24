@@ -60,6 +60,7 @@
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="delBtn" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="border" Property="Opacity" Value=".85" />
                                 <Setter TargetName="text" Property="FontWeight" Value="Bold" />
                                 <Setter TargetName="text" Property="FontSize" Value="13" />
                                 <Setter TargetName="border" Property="BorderThickness" Value="1" />
@@ -141,7 +142,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="0.5*" />
                     </Grid.ColumnDefinitions>
                     <Border
                         Grid.RowSpan="7"
@@ -162,10 +163,10 @@
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        FontSize="18"
+                        FontSize="20"
                         FontWeight="Bold"
                         Text="{Binding SelectedItem.Line2nd,
-                                       FallbackValue='slodkie pikle chl'}"
+                                       FallbackValue='tortilla - rozmrazanie'}"
                         TextAlignment="Center"
                         TextWrapping="Wrap" />
                     <TextBlock
@@ -354,10 +355,10 @@
                     </TextBlock>
                     <TextBlock
                         Grid.Row="0"
-                        Grid.RowSpan="6"
+                        Grid.RowSpan="7"
                         Grid.Column="3"
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
+                        VerticalAlignment="Center"
                         FontSize="24"
                         FontWeight="Bold"
                         SnapsToDevicePixels="True"
@@ -474,7 +475,7 @@
                     DisplayMemberPath="Name"
                     IsEnabled="{Binding IsItemSelected}"
                     ItemsSource="{Binding Categories}"
-                    SelectedValue="{Binding SelectedCategory}" />
+                    SelectedItem="{Binding SelectedCategory}" />
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="2"
@@ -570,6 +571,7 @@
                     VerticalAlignment="Center"
                     Text="Category:" />
                 <TextBox
+                    x:Name="textCategoryName"
                     Grid.Row="6"
                     Grid.Column="1"
                     Margin="3"
@@ -604,6 +606,7 @@
                 HorizontalContentAlignment="Center"
                 Background="Transparent"
                 BorderThickness="0"
+                IsTabStop="False"
                 ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
                 ItemsSource="{Binding Items}"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -628,6 +631,7 @@
                 HorizontalContentAlignment="Stretch"
                 Background="Transparent"
                 BorderThickness="0"
+                IsTabStop="False"
                 ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
                 ItemsSource="{Binding Categories}"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"

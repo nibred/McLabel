@@ -1,4 +1,5 @@
-﻿using McLabel.ViewModels.Base;
+﻿using McLabel.Models.Interfaces;
+using McLabel.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace McLabel.Models
 {
-    internal class Item : NotifyBase
+    internal class Item : NotifyBase, IItem
     {
         private string _name;
         private string _category;

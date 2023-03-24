@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using McLabel.Models.Interfaces;
+using System.Xml.Linq;
 
 namespace McLabel.Services
 {
@@ -50,11 +51,46 @@ namespace McLabel.Services
         public bool SaveXmlFile(ICollection<ICategory> categories)
         {
             XmlDocument document = CreateXmlFromDefault(categories);
-            if (_fileDialogService.SaveFile(document, out string path))
+            if (_fileDialogService.SaveFile(document))
             {
                 return true;
             }
             return false;
+        }
+
+        private void AddItemsInXml(ICollection<IItem> items, ref XmlDocument document)
+        {
+            XmlNode categoryBaseNode = document.SelectSingleNode(ITEM_NODE);
+            foreach (var item in items)
+            {
+                XmlElement newItem = document.CreateElement("Item");
+                Dictionary<string, string> itemElements = new Dictionary<string, string>()
+                {
+                    {"Półprodukty", item.Name },
+                    {"AssignedCategory", item.Category },
+                    {"Exp1_dni", item.Exp1Days },
+                    {"Exp1_godzin", item.Exp1Hours },
+                    {"Exp1_wiadomość", item.Exp1Message },
+                    {"Exp1_protokół", item.Exp1Minutes },
+                    {"Exp2_dni", item.Exp2Days },
+                    {"Exp2_godzin", item.Exp2Hours },
+                    {"Exp2_wiadomość", item.Exp2Message },
+                    {"Exp2_protokół", item.Exp2Minutes },
+                    {"Format", null },
+                    {"linia_1st", item.Line1st },
+                    {"linia_2nd", item.Line2nd }
+                };
+                foreach (KeyValuePair<string, string> itemElement in itemElements)
+                {
+                    XmlNode newNode = document.CreateElement(itemElement.Key);
+                    if (itemElement.Value != null)
+                    {
+                        newNode.InnerText = itemElement.Value;
+                    }
+                    newItem.AppendChild(newNode);
+                }
+                categoryBaseNode.AppendChild(newItem);
+            }
         }
         private XmlDocument CreateXmlFromDefault(ICollection<ICategory> categories)
         {
@@ -68,16 +104,20 @@ namespace McLabel.Services
                 {
                     {"Name", category.Name },
                     {"Color", category.Color },
-                    {"PrintTemplate", "" },
-                    {"Printer", "" }
+                    {"PrintTemplate", null },
+                    {"Printer", null }
                 };
                 foreach (KeyValuePair<string, string> node in categoryNodes)
                 {
                     XmlNode newNode = document.CreateElement(node.Key);
-                    newNode.InnerText = node.Value;
+                    if (node.Value != null)
+                    {
+                        newNode.InnerText = node.Value;
+                    }
                     newCategory.AppendChild(newNode);
                 }
                 categoryBaseNode.AppendChild(newCategory);
+                AddItemsInXml(category.Items, ref document);
             }
             return document;
         }

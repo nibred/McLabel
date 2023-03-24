@@ -17,9 +17,6 @@ namespace McLabel.Utils.Extensions
                 collection.Add(item);
             }
         }
-        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> sequence)
-        {
-            return new ObservableCollection<T>(sequence);
-        }
+        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> sequence) => new ObservableCollection<T>(sequence);
     }
 }

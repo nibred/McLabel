@@ -58,7 +58,22 @@ namespace McLabel.ViewModels
             set
             {
                 Set(ref _selectedCategory, value);
+                _changeCategory = SelectedCategory;
                 OnPropertyChanged(nameof(Items));
+                OnPropertyChanged(nameof(ChangeCategory));
+            }
+        }
+        private ICategory _changeCategory;
+        public ICategory ChangeCategory
+        {
+            get => _changeCategory;
+            set
+            {
+                Set(ref _changeCategory, value);
+                _changeCategory?.Items.Add(SelectedItem);
+                _selectedCategory.Items.Remove(SelectedItem);
+                SelectedCategory = _changeCategory;
+                OnPropertyChanged(nameof(SelectedCategory));
             }
         }
         #endregion
@@ -130,6 +145,17 @@ namespace McLabel.ViewModels
         public MainEditorViewModel() : base() // design time constructor
         {
             Categories = new ObservableCollection<ICategory>();
+            for (int i = 0; i < 7; i++)
+            {
+                Categories.Add(new Category
+                {
+                    Color = $"{GenerateRandomColor()}",
+                    Name = $"Category {i + 1}",
+                    Printer = "",
+                    PrintTemplate = ""
+                });
+            }
+            SelectedCategory = Categories[0];
             for (int i = 0; i < 10; i++)
             {
                 SelectedCategory.Items.Add(new Item
@@ -145,16 +171,6 @@ namespace McLabel.ViewModels
                     Line1st = $"Item {i + 1}",
                     Line2nd = "Line2nd",
                     Format = ""
-                });
-            }
-            for (int i = 0; i < 7; i++)
-            {
-                Categories.Add(new Category
-                {
-                    Color = $"{GenerateRandomColor()}",
-                    Name = $"Category {i + 1}",
-                    Printer = "",
-                    PrintTemplate = ""
                 });
             }
         }

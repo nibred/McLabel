@@ -77,7 +77,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="2.5*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height=".8*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -161,7 +161,7 @@
                     <TextBlock
                         Grid.Row="0"
                         Grid.ColumnSpan="2"
-                        HorizontalAlignment="Right"
+                        HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         FontSize="20"
                         FontWeight="Bold"
@@ -475,7 +475,7 @@
                     DisplayMemberPath="Name"
                     IsEnabled="{Binding IsItemSelected}"
                     ItemsSource="{Binding Categories}"
-                    SelectedItem="{Binding SelectedCategory}" />
+                    SelectedItem="{Binding ChangeCategory}" />
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="2"
@@ -598,8 +598,8 @@
         <Border
             Grid.Row="2"
             Margin="10"
-            Background="#FFEAEAEA"
-            CornerRadius="7">
+            Background="#FFBFBFBF"
+            CornerRadius="13">
             <ListBox
                 Margin="5"
                 HorizontalAlignment="Stretch"
@@ -623,8 +623,8 @@
         <Border
             Grid.Row="3"
             Margin="10"
-            Background="#FFEAEAEA"
-            CornerRadius="7">
+            Background="#FFBFBFBF"
+            CornerRadius="13">
             <ListBox
                 Margin="5"
                 HorizontalAlignment="Stretch"

@@ -11,11 +11,12 @@
     Background="Transparent"
     DataContext="{Binding MainViewModel,
                           Source={StaticResource Locator}}"
+    FontFamily="Arial"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
-    <Border Background="White" CornerRadius="8">
+    <Border Background="#E2E2E2" CornerRadius="8">
         <Grid Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />

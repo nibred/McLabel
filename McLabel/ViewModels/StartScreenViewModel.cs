@@ -23,7 +23,7 @@ namespace McLabel.ViewModels
             OpenMainEditorCommand = new RelayCommand(o => viewNavigationService.CurrentVM = mainEditorViewModel);
             SelectFilesCommand = new RelayCommand(o =>
             {
-                if (xmlService.OpenXmlFiles())
+                if (xmlService.OpenFiles())
                 {
                     mainEditorViewModel.AddCategories(xmlService.Categories);
                     OpenMainEditorCommand.Execute(null);

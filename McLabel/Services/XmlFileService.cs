@@ -14,7 +14,7 @@ namespace McLabel.Services
 {
     internal class XmlFileService : IFileService
     {
-        private const string DEFAULT_XML_DATA = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" +
+        private const string DEFAULT_XML = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" +
             "<LabelDataFile><HeaderPC><AppVersion>2.0.5.1</AppVersion><MenuVersion>97284</MenuVersion><FileVersion>3.19</FileVersion></HeaderPC><HeaderPrinter>" +
             "<CurrentFirmware>F 1.10.06</CurrentFirmware></HeaderPrinter><Shared><SubsectionTag1><Modify>false</Modify><CreationDate>5/21/2014</CreationDate></SubsectionTag1>" +
             "<SubsectionTag2><ModifiedDate>4-26-2022</ModifiedDate><ModifiedBy>FST Ithaca-9700</ModifiedBy></SubsectionTag2><SupportedLabelFields><Półprodukty/><Categories/>" +
@@ -23,6 +23,8 @@ namespace McLabel.Services
         private const string BASE_NODE = "LabelDataFile";
         private const string CATEGORY_NODE = "LabelDataFile/Categories";
         private const string ITEM_NODE = "LabelDataFile/Labels";
+        private const string MENUDATA_FILENAME = "MENUDATA";
+        private const string USERDATA_FILENAME = "USERDATA";
 
         private readonly FileDialogService _fileDialogService;
         private List<XmlDocument> _validXmlDocuments;
@@ -35,30 +37,39 @@ namespace McLabel.Services
             _validXmlDocuments = new List<XmlDocument>();
             _categories = new List<ICategory>();
         }
-        public bool OpenXmlFiles()
+        public bool OpenFiles()
         {
             if (_fileDialogService.OpenFiles(out IEnumerable<string> selectedXmlFiles))
             {
-                if (IsValidFiles(selectedXmlFiles))
+                if (ValidateFiles(selectedXmlFiles))
                 {
-                    LoadCategories();
-                    LoadItems();
+                    ParseCategories();
+                    ParseItems();
                     return true;
                 }
             }
             return false;
         }
-        public bool SaveXmlFile(ICollection<ICategory> categories)
+        public bool SaveFile(ICollection<ICategory> categories)
         {
-            XmlDocument document = CreateXmlFromDefault(categories);
-            if (_fileDialogService.SaveFile(document))
+            XmlDocument document = SerializeCategories(categories);
+            if (_fileDialogService.SaveFile(document, MENUDATA_FILENAME))
             {
+                _fileDialogService.SaveFileWithoutDialog(MakeUserdataFile(), USERDATA_FILENAME);
                 return true;
             }
             return false;
         }
-
-        private void AddItemsInXml(ICollection<IItem> items, ref XmlDocument document)
+        private XmlDocument MakeUserdataFile()
+        {
+            XmlDocument userdata = new XmlDocument();
+            userdata.LoadXml(DEFAULT_XML);
+            XmlNode node = userdata.SelectSingleNode($"{BASE_NODE}/Shared/SupportedLabelFields");
+            while (node.FirstChild != null)
+                node.RemoveChild(node.FirstChild);
+            return userdata;
+        }     
+        private void SerializeItems(ICollection<IItem> items, ref XmlDocument document)
         {
             XmlNode categoryBaseNode = document.SelectSingleNode(ITEM_NODE);
             foreach (var item in items)
@@ -83,7 +94,7 @@ namespace McLabel.Services
                 foreach (KeyValuePair<string, string> itemElement in itemElements)
                 {
                     XmlNode newNode = document.CreateElement(itemElement.Key);
-                    if (itemElement.Value != null)
+                    if (!string.IsNullOrWhiteSpace(itemElement.Value))
                     {
                         newNode.InnerText = itemElement.Value;
                     }
@@ -92,10 +103,10 @@ namespace McLabel.Services
                 categoryBaseNode.AppendChild(newItem);
             }
         }
-        private XmlDocument CreateXmlFromDefault(ICollection<ICategory> categories)
+        private XmlDocument SerializeCategories(ICollection<ICategory> categories)
         {
             XmlDocument document = new XmlDocument();
-            document.LoadXml(DEFAULT_XML_DATA);
+            document.LoadXml(DEFAULT_XML);
             XmlNode categoryBaseNode = document.SelectSingleNode(CATEGORY_NODE);
             foreach (var category in categories)
             {
@@ -110,18 +121,18 @@ namespace McLabel.Services
                 foreach (KeyValuePair<string, string> node in categoryNodes)
                 {
                     XmlNode newNode = document.CreateElement(node.Key);
-                    if (node.Value != null)
+                    if (!string.IsNullOrWhiteSpace(node.Value))
                     {
                         newNode.InnerText = node.Value;
                     }
                     newCategory.AppendChild(newNode);
                 }
                 categoryBaseNode.AppendChild(newCategory);
-                AddItemsInXml(category.Items, ref document);
+                SerializeItems(category.Items, ref document);
             }
             return document;
         }
-        private void LoadItems()
+        private void ParseItems()
         {
             foreach (XmlDocument xmlDocument in _validXmlDocuments)
             {
@@ -151,7 +162,7 @@ namespace McLabel.Services
                 }
             }
         }
-        private void LoadCategories()
+        private void ParseCategories()
         {
             List<string> categoryNames = new List<string>();
             categoryNames.Capacity = 10;
@@ -175,7 +186,7 @@ namespace McLabel.Services
                 }
             }
         }
-        private bool IsValidFiles(IEnumerable<string> xmlFiles)
+        private bool ValidateFiles(IEnumerable<string> xmlFiles)
         {
             _validXmlDocuments.Clear();
             foreach (var xmlFile in xmlFiles)

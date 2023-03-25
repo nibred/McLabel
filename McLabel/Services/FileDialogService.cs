@@ -7,12 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
+
 namespace McLabel.Services
 {
     internal class FileDialogService
     {
         private const string FILTER = "XML Files (*.xml)|*.xml";
-        private const string MAIN_FILE = "MENUDATA";
+        private string _selectedPath;
         public bool OpenFiles(out IEnumerable<string> selectedFiles)
         {
             OpenFileDialog openDialog = new OpenFileDialog()
@@ -30,7 +31,7 @@ namespace McLabel.Services
             selectedFiles = null;
             return false;
         }
-        public bool SaveFile(XmlDocument document)
+        public bool SaveFile(XmlDocument document, string filename)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog()
             {
@@ -38,14 +39,27 @@ namespace McLabel.Services
                 Filter = FILTER,
                 ValidateNames = true,
                 CheckPathExists = true,
-                FileName = MAIN_FILE
+                FileName = filename
             };
             if (saveFileDialog.ShowDialog() == true)
             {
+                _selectedPath = Path.GetDirectoryName(saveFileDialog.FileName);
                 document.Save(saveFileDialog.FileName);
                 return true;
             }
             return false;
+        }
+        public bool SaveFileWithoutDialog(XmlDocument document, string filename)
+        {
+            try
+            {
+                document.Save($"{_selectedPath}/{filename}.xml");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

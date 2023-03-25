@@ -110,7 +110,7 @@ namespace McLabel.ViewModels
         });
         public ICommand SaveCommand => new RelayCommand(o =>
         {
-            _xmlService.SaveXmlFile(Categories);
+            _xmlService.SaveFile(Categories);
         }, o => Categories.Any());
         public ICommand GetRandomColorCommand => new RelayCommand(o =>
         {

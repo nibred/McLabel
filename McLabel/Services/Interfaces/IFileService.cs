@@ -12,7 +12,7 @@ namespace McLabel.Services.Interfaces
     internal interface IFileService
     {
         ICollection<ICategory> Categories { get; }
-        bool OpenXmlFiles();
-        bool SaveXmlFile(ICollection<ICategory> categories);
+        bool OpenFiles();
+        bool SaveFile(ICollection<ICategory> categories);
     }
 }

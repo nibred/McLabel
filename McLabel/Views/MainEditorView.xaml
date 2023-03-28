@@ -17,67 +17,13 @@
         <conv:ReversedBooleanToVisibiltyConverter x:Key="ReversedBooleanConverter" />
         <conv:DateTimeConverter x:Key="DateTimeConverter" />
         <conv:StringVisibilityConverter x:Key="StringVisibilityConverter" />
-        <Style x:Key="ListBoxItemStyle1" TargetType="{x:Type ListBoxItem}">
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ListBoxItem">
-                        <Border
-                            x:Name="border"
-                            Height="45"
-                            Margin="3,5"
-                            Background="{Binding Color,
-                                                 TargetNullValue=#abcdef}"
-                            CornerRadius="10">
-                            <Grid Margin="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="auto" />
-                                </Grid.ColumnDefinitions>
-                                <Button
-                                    x:Name="delBtn"
-                                    Grid.Column="1"
-                                    Command="{Binding DataContext.RemoveElementCommand,
-                                                      RelativeSource={RelativeSource AncestorType=UserControl,
-                                                                                     AncestorLevel=1}}"
-                                    CommandParameter="{Binding}"
-                                    Content="Del"
-                                    Visibility="Collapsed" />
-                                <TextBlock
-                                    x:Name="text"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding Name}"
-                                    TextWrapping="Wrap" />
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="border" Property="BorderThickness" Value="1" />
-                                <Setter TargetName="border" Property="BorderBrush" Value="Black" />
-                                <Setter TargetName="text" Property="FontWeight" Value="Bold" />
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="delBtn" Property="Visibility" Value="Visible" />
-                                <Setter TargetName="border" Property="Opacity" Value=".85" />
-                                <Setter TargetName="text" Property="FontWeight" Value="Bold" />
-                                <Setter TargetName="text" Property="FontSize" Value="13" />
-                                <Setter TargetName="border" Property="BorderThickness" Value="1" />
-                                <Setter TargetName="border" Property="BorderBrush" Value="#FF312D2D" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="2.5*" />
-            <RowDefinition Height=".8*" />
+            <RowDefinition Height="auto" MinHeight="50" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -114,505 +60,472 @@
                     Content="Add new category" />
             </UniformGrid>
         </Grid>
-        <Grid Grid.Row="1" Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="3*" />
-            </Grid.ColumnDefinitions>
-            <Border
-                Grid.Column="0"
-                Width="200"
-                Height="200"
-                Margin="20"
-                Background="White"
-                BorderBrush="Black"
-                BorderThickness="1"
-                CornerRadius="10"
-                SnapsToDevicePixels="True">
-                <Grid Margin="10,5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="0.5*" />
-                    </Grid.ColumnDefinitions>
-                    <Border
-                        Grid.RowSpan="7"
-                        Grid.ColumnSpan="3"
-                        Panel.ZIndex="100"
-                        Background="White"
-                        Visibility="Collapsed">
+        <Border
+            Grid.Row="1"
+            Margin="5"
+            Background="{StaticResource SelectionBackground}"
+            CornerRadius="13">
+            <Grid Grid.Row="1" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+                <Border
+                    Grid.Column="0"
+                    Width="200"
+                    Height="200"
+                    Margin="20"
+                    Background="{StaticResource LabelBackground}"
+                    BorderBrush="{StaticResource LabelBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    SnapsToDevicePixels="True">
+                    <Grid Margin="10,5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="0.5*" />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            Grid.RowSpan="7"
+                            Grid.ColumnSpan="3"
+                            Panel.ZIndex="100"
+                            Background="{StaticResource LabelBackground}"
+                            Visibility="{Binding IsItemSelected,
+                                                 Converter={StaticResource ReversedBooleanConverter}}">
+                            <TextBlock Style="{StaticResource NoItemSelectedTextStyle}" Text="No item selected" />
+                        </Border>
                         <TextBlock
+                            Grid.Row="0"
+                            Grid.ColumnSpan="2"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            FontSize="16"
-                            Foreground="#5c5c5c"
-                            Text="No item selected"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Text="{Binding SelectedItem.Line2nd,
+                                           FallbackValue='tortilla - rozmrazanie'}"
+                            TextAlignment="Center"
                             TextWrapping="Wrap" />
-                    </Border>
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="{Binding FontSize}"
+                            FontWeight="Bold"
+                            Text="Zrobiono:"
+                            TextAlignment="Center"
+                            TextWrapping="NoWrap" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="{Binding FontSize}"
+                            Text="{Binding DateTimeNow,
+                                           FallbackValue='16.3.23',
+                                           StringFormat=d.M.yy}"
+                            TextAlignment="Center"
+                            TextWrapping="NoWrap" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="{Binding FontSize}"
+                            Text="{Binding DateTimeNow,
+                                           FallbackValue='17:12',
+                                           StringFormat=H:mm}"
+                            TextAlignment="Center"
+                            TextWrapping="NoWrap" />
+                        <TextBlock
+                            x:Name="textExp1"
+                            Grid.Row="3"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="{Binding FontSize}"
+                            FontWeight="Bold"
+                            Text="{Binding SelectedItem.Exp1Message,
+                                           FallbackValue='Gotowe'}"
+                            TextAlignment="Center"
+                            TextWrapping="NoWrap" />
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="{Binding FontSize}"
+                            TextAlignment="Center"
+                            TextWrapping="NoWrap"
+                            Visibility="{Binding ElementName=textExp1,
+                                                 Path=Text,
+                                                 Converter={StaticResource StringVisibilityConverter}}">
+                            <TextBlock.Text>
+                                <MultiBinding
+                                    Converter="{StaticResource DateTimeConverter}"
+                                    FallbackValue="23.3.23"
+                                    Mode="OneWay"
+                                    StringFormat="d.M.yy">
+                                    <Binding
+                                        ElementName="Exp1Days"
+                                        Path="Text"
+                                        UpdateSourceTrigger="PropertyChanged" />
+                                    <Binding
+                                        ElementName="Exp1Hours"
+                                        Path="Text"
+                                        UpdateSourceTrigger="PropertyChanged" />
+                                    <Binding
+                                        ElementName="Exp1Minutes"
+                                        Path="Text"
+                                        UpdateSourceTrigger="PropertyChanged" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="{Binding FontSize}"
+                            TextAlignment="Center"
+                            TextWrapping="NoWrap"
+                            Visibility="{Binding ElementName=textExp1,
+                                                 Path=Text,
+                                                 Converter={StaticResource StringVisibilityConverter}}">
+                            <TextBlock.Text>
+                                <MultiBinding
+                                    Converter="{StaticResource DateTimeConverter}"
+                                    FallbackValue="17:24"
+                                    Mode="OneWay"
+                                    StringFormat="H:mm">
+                                    <Binding
+                                        ElementName="Exp1Days"
+                                        Path="Text"
+                                        UpdateSourceTrigger="PropertyChanged" />
+                                    <Binding
+                                        ElementName="Exp1Hours"
+                                        Path="Text"
+                                        UpdateSourceTrigger="PropertyChanged" />
+                                    <Binding
+                                        ElementName="Exp1Minutes"
+                                        Path="Text"
+                                        UpdateSourceTrigger="PropertyChanged" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock
+                            x:Name="textExp2"
+                            Grid.Row="5"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="{Binding FontSize}"
+                            FontWeight="Bold"
+                            Text="{Binding SelectedItem.Exp2Message,
+                                           FallbackValue='Koniec:'}"
+                            TextAlignment="Center"
+                            TextWrapping="NoWrap" />
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="{Binding FontSize}"
+                            TextAlignment="Center"
+                            TextWrapping="NoWrap"
+                            Visibility="{Binding ElementName=textExp2,
+                                                 Path=Text,
+                                                 Converter={StaticResource StringVisibilityConverter}}">
+                            <TextBlock.Text>
+                                <MultiBinding
+                                    Converter="{StaticResource DateTimeConverter}"
+                                    FallbackValue="23.3.23"
+                                    Mode="OneWay"
+                                    StringFormat="d.M.yy">
+                                    <Binding
+                                        ElementName="Exp2Days"
+                                        Path="Text"
+                                        UpdateSourceTrigger="PropertyChanged" />
+                                    <Binding
+                                        ElementName="Exp2Hours"
+                                        Path="Text"
+                                        UpdateSourceTrigger="PropertyChanged" />
+                                    <Binding
+                                        ElementName="Exp2Minutes"
+                                        Path="Text"
+                                        UpdateSourceTrigger="PropertyChanged" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="{Binding FontSize}"
+                            TextAlignment="Center"
+                            TextWrapping="NoWrap"
+                            Visibility="{Binding ElementName=textExp2,
+                                                 Path=Text,
+                                                 Converter={StaticResource StringVisibilityConverter}}">
+                            <TextBlock.Text>
+                                <MultiBinding
+                                    Converter="{StaticResource DateTimeConverter}"
+                                    FallbackValue="17:24"
+                                    Mode="OneWay"
+                                    StringFormat="H:mm">
+                                    <Binding
+                                        ElementName="Exp2Days"
+                                        Path="Text"
+                                        UpdateSourceTrigger="PropertyChanged" />
+                                    <Binding
+                                        ElementName="Exp2Hours"
+                                        Path="Text"
+                                        UpdateSourceTrigger="PropertyChanged" />
+                                    <Binding
+                                        ElementName="Exp2Minutes"
+                                        Path="Text"
+                                        UpdateSourceTrigger="PropertyChanged" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.RowSpan="7"
+                            Grid.Column="3"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="24"
+                            FontWeight="Bold"
+                            SnapsToDevicePixels="True"
+                            Text="{Binding SelectedItem.Line1st,
+                                           FallbackValue='rozmrazanie'}"
+                            TextAlignment="Center"
+                            TextWrapping="NoWrap">
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="-90" />
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Grid>
+                </Border>
+                <Grid Grid.Column="1" Margin="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
                     <TextBlock
                         Grid.Row="0"
-                        Grid.ColumnSpan="2"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="20"
-                        FontWeight="Bold"
-                        Text="{Binding SelectedItem.Line2nd,
-                                       FallbackValue='tortilla - rozmrazanie'}"
-                        TextAlignment="Center"
-                        TextWrapping="Wrap" />
+                        Grid.Column="0"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="Name:" />
+                    <TextBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="3"
+                        IsEnabled="{Binding IsItemSelected}"
+                        Text="{Binding SelectedItem.Name,
+                                       UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="Expired days 1:" />
+                    <TextBox
+                        x:Name="Exp1Days"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="3"
+                        IsEnabled="{Binding IsItemSelected}"
+                        Text="{Binding SelectedItem.Exp1Days,
+                                       UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="Expired hours 1:" />
+                    <TextBox
+                        x:Name="Exp1Hours"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Margin="3"
+                        IsEnabled="{Binding IsItemSelected}"
+                        Text="{Binding SelectedItem.Exp1Hours,
+                                       UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="Expired minutes 1:" />
+                    <TextBox
+                        x:Name="Exp1Minutes"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="3"
+                        IsEnabled="{Binding IsItemSelected}"
+                        Text="{Binding SelectedItem.Exp1Minutes,
+                                       UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="Expired message 1:" />
+                    <TextBox
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Margin="3"
+                        IsEnabled="{Binding IsItemSelected}"
+                        Text="{Binding SelectedItem.Exp1Message,
+                                       UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
                         Grid.Row="1"
-                        Grid.ColumnSpan="2"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="{Binding FontSize}"
-                        FontWeight="Bold"
-                        Text="Zrobiono:"
-                        TextAlignment="Center"
-                        TextWrapping="NoWrap" />
-                    <TextBlock
-                        Grid.Row="2"
                         Grid.Column="0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="{Binding FontSize}"
-                        Text="{Binding DateTimeNow,
-                                       FallbackValue='16.3.23',
-                                       StringFormat=d.M.yy}"
-                        TextAlignment="Center"
-                        TextWrapping="NoWrap" />
-                    <TextBlock
-                        Grid.Row="2"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="Category:" />
+                    <ComboBox
+                        Grid.Row="1"
                         Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="{Binding FontSize}"
-                        Text="{Binding DateTimeNow,
-                                       FallbackValue='17:12',
-                                       StringFormat=H:mm}"
-                        TextAlignment="Center"
-                        TextWrapping="NoWrap" />
-                    <TextBlock
-                        x:Name="textExp1"
-                        Grid.Row="3"
-                        Grid.ColumnSpan="2"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="{Binding FontSize}"
-                        FontWeight="Bold"
-                        Text="{Binding SelectedItem.Exp1Message,
-                                       FallbackValue='Gotowe'}"
-                        TextAlignment="Center"
-                        TextWrapping="NoWrap" />
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="{Binding FontSize}"
-                        TextAlignment="Center"
-                        TextWrapping="NoWrap"
-                        Visibility="{Binding ElementName=textExp1,
-                                             Path=Text,
-                                             Converter={StaticResource StringVisibilityConverter}}">
-                        <TextBlock.Text>
-                            <MultiBinding
-                                Converter="{StaticResource DateTimeConverter}"
-                                FallbackValue="23.3.23"
-                                Mode="OneWay"
-                                StringFormat="d.M.yy">
-                                <Binding
-                                    ElementName="Exp1Days"
-                                    Path="Text"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                                <Binding
-                                    ElementName="Exp1Hours"
-                                    Path="Text"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                                <Binding
-                                    ElementName="Exp1Minutes"
-                                    Path="Text"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="{Binding FontSize}"
-                        TextAlignment="Center"
-                        TextWrapping="NoWrap"
-                        Visibility="{Binding ElementName=textExp1,
-                                             Path=Text,
-                                             Converter={StaticResource StringVisibilityConverter}}">
-                        <TextBlock.Text>
-                            <MultiBinding
-                                Converter="{StaticResource DateTimeConverter}"
-                                FallbackValue="17:24"
-                                Mode="OneWay"
-                                StringFormat="H:mm">
-                                <Binding
-                                    ElementName="Exp1Days"
-                                    Path="Text"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                                <Binding
-                                    ElementName="Exp1Hours"
-                                    Path="Text"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                                <Binding
-                                    ElementName="Exp1Minutes"
-                                    Path="Text"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-                    <TextBlock
-                        x:Name="textExp2"
-                        Grid.Row="5"
-                        Grid.ColumnSpan="2"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="{Binding FontSize}"
-                        FontWeight="Bold"
-                        Text="{Binding SelectedItem.Exp2Message,
-                                       FallbackValue='Koniec:'}"
-                        TextAlignment="Center"
-                        TextWrapping="NoWrap" />
-                    <TextBlock
-                        Grid.Row="6"
-                        Grid.Column="0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="{Binding FontSize}"
-                        TextAlignment="Center"
-                        TextWrapping="NoWrap"
-                        Visibility="{Binding ElementName=textExp2,
-                                             Path=Text,
-                                             Converter={StaticResource StringVisibilityConverter}}">
-                        <TextBlock.Text>
-                            <MultiBinding
-                                Converter="{StaticResource DateTimeConverter}"
-                                FallbackValue="23.3.23"
-                                Mode="OneWay"
-                                StringFormat="d.M.yy">
-                                <Binding
-                                    ElementName="Exp2Days"
-                                    Path="Text"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                                <Binding
-                                    ElementName="Exp2Hours"
-                                    Path="Text"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                                <Binding
-                                    ElementName="Exp2Minutes"
-                                    Path="Text"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-                    <TextBlock
-                        Grid.Row="6"
-                        Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="{Binding FontSize}"
-                        TextAlignment="Center"
-                        TextWrapping="NoWrap"
-                        Visibility="{Binding ElementName=textExp2,
-                                             Path=Text,
-                                             Converter={StaticResource StringVisibilityConverter}}">
-                        <TextBlock.Text>
-                            <MultiBinding
-                                Converter="{StaticResource DateTimeConverter}"
-                                FallbackValue="17:24"
-                                Mode="OneWay"
-                                StringFormat="H:mm">
-                                <Binding
-                                    ElementName="Exp2Days"
-                                    Path="Text"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                                <Binding
-                                    ElementName="Exp2Hours"
-                                    Path="Text"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                                <Binding
-                                    ElementName="Exp2Minutes"
-                                    Path="Text"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
+                        Margin="3"
+                        DisplayMemberPath="Name"
+                        IsEnabled="{Binding IsItemSelected}"
+                        ItemsSource="{Binding Categories}"
+                        SelectedItem="{Binding ChangeCategory}" />
                     <TextBlock
                         Grid.Row="0"
-                        Grid.RowSpan="7"
+                        Grid.Column="2"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="First message:" />
+                    <TextBox
+                        Grid.Row="0"
                         Grid.Column="3"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="24"
-                        FontWeight="Bold"
-                        SnapsToDevicePixels="True"
+                        Margin="3"
+                        IsEnabled="{Binding IsItemSelected}"
                         Text="{Binding SelectedItem.Line1st,
-                                       FallbackValue='rozmrazanie'}"
-                        TextAlignment="Center"
-                        TextWrapping="NoWrap">
-                        <TextBlock.LayoutTransform>
-                            <RotateTransform Angle="-90" />
-                        </TextBlock.LayoutTransform>
-                    </TextBlock>
+                                       UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="Second message:" />
+                    <TextBox
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        Margin="3"
+                        IsEnabled="{Binding IsItemSelected}"
+                        Text="{Binding SelectedItem.Line2nd,
+                                       UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="Expired days 2:" />
+                    <TextBox
+                        x:Name="Exp2Days"
+                        Grid.Row="2"
+                        Grid.Column="3"
+                        Margin="3"
+                        IsEnabled="{Binding IsItemSelected}"
+                        Text="{Binding SelectedItem.Exp2Days,
+                                       UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="Expired hours 2:" />
+                    <TextBox
+                        x:Name="Exp2Hours"
+                        Grid.Row="3"
+                        Grid.Column="3"
+                        Margin="3"
+                        IsEnabled="{Binding IsItemSelected}"
+                        Text="{Binding SelectedItem.Exp2Hours,
+                                       UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="Expired minutes 2:" />
+                    <TextBox
+                        x:Name="Exp2Minutes"
+                        Grid.Row="4"
+                        Grid.Column="3"
+                        Margin="3"
+                        IsEnabled="{Binding IsItemSelected}"
+                        Text="{Binding SelectedItem.Exp2Minutes,
+                                       UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="2"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="Expired message 2:" />
+                    <TextBox
+                        Grid.Row="5"
+                        Grid.Column="3"
+                        Margin="3"
+                        IsEnabled="{Binding IsItemSelected}"
+                        Text="{Binding SelectedItem.Exp2Message,
+                                       UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="Category title:" />
+                    <TextBox
+                        x:Name="textCategoryName"
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Margin="3"
+                        Text="{Binding SelectedCategory.Name,
+                                       UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="2"
+                        Style="{StaticResource FieldTextStyle}"
+                        Text="Color:" />
+                    <Button
+                        Grid.Row="6"
+                        Grid.Column="3"
+                        Margin="3"
+                        Background="{Binding SelectedCategory.Color}"
+                        Command="{Binding GetRandomColorCommand,
+                                          UpdateSourceTrigger=PropertyChanged}"
+                        Content="{Binding SelectedCategory.Color}"
+                        ContentStringFormat="Click to change ({0})" />
                 </Grid>
-            </Border>
-            <Grid Grid.Column="1" Margin="20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="Name:" />
-                <TextBox
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Margin="3"
-                    IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Name,
-                                   UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="Expired days 1:" />
-                <TextBox
-                    x:Name="Exp1Days"
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    Margin="3"
-                    IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp1Days,
-                                   UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock
-                    Grid.Row="3"
-                    Grid.Column="0"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="Expired hours 1:" />
-                <TextBox
-                    x:Name="Exp1Hours"
-                    Grid.Row="3"
-                    Grid.Column="1"
-                    Margin="3"
-                    IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp1Hours,
-                                   UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock
-                    Grid.Row="4"
-                    Grid.Column="0"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="Expired minutes 1:" />
-                <TextBox
-                    x:Name="Exp1Minutes"
-                    Grid.Row="4"
-                    Grid.Column="1"
-                    Margin="3"
-                    IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp1Minutes,
-                                   UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock
-                    Grid.Row="5"
-                    Grid.Column="0"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="Expired messages 1:" />
-                <TextBox
-                    Grid.Row="5"
-                    Grid.Column="1"
-                    Margin="3"
-                    IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp1Message,
-                                   UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="Category:" />
-                <ComboBox
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Margin="3"
-                    DisplayMemberPath="Name"
-                    IsEnabled="{Binding IsItemSelected}"
-                    ItemsSource="{Binding Categories}"
-                    SelectedItem="{Binding ChangeCategory}" />
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="First message:" />
-                <TextBox
-                    Grid.Row="0"
-                    Grid.Column="3"
-                    Margin="3"
-                    IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Line1st,
-                                   UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="Second message:" />
-                <TextBox
-                    Grid.Row="1"
-                    Grid.Column="3"
-                    Margin="3"
-                    IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Line2nd,
-                                   UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock
-                    Grid.Row="2"
-                    Grid.Column="2"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="Expired days 2:" />
-                <TextBox
-                    x:Name="Exp2Days"
-                    Grid.Row="2"
-                    Grid.Column="3"
-                    Margin="3"
-                    IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp2Days,
-                                   UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock
-                    Grid.Row="3"
-                    Grid.Column="2"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="Expired hours 2:" />
-                <TextBox
-                    x:Name="Exp2Hours"
-                    Grid.Row="3"
-                    Grid.Column="3"
-                    Margin="3"
-                    IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp2Hours,
-                                   UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock
-                    Grid.Row="4"
-                    Grid.Column="2"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="Expired minutes 2:" />
-                <TextBox
-                    x:Name="Exp2Minutes"
-                    Grid.Row="4"
-                    Grid.Column="3"
-                    Margin="3"
-                    IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp2Minutes,
-                                   UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock
-                    Grid.Row="5"
-                    Grid.Column="2"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="Expired messages 2:" />
-                <TextBox
-                    Grid.Row="5"
-                    Grid.Column="3"
-                    Margin="3"
-                    IsEnabled="{Binding IsItemSelected}"
-                    Text="{Binding SelectedItem.Exp2Message,
-                                   UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock
-                    Grid.Row="6"
-                    Grid.Column="0"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="Category:" />
-                <TextBox
-                    x:Name="textCategoryName"
-                    Grid.Row="6"
-                    Grid.Column="1"
-                    Margin="3"
-                    Text="{Binding SelectedCategory.Name,
-                                   UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock
-                    Grid.Row="6"
-                    Grid.Column="2"
-                    Margin="10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Text="Color:" />
-                <Button
-                    Grid.Row="6"
-                    Grid.Column="3"
-                    Margin="3"
-                    Background="{Binding SelectedCategory.Color}"
-                    Command="{Binding GetRandomColorCommand,
-                                      UpdateSourceTrigger=PropertyChanged}"
-                    Content="{Binding SelectedCategory.Color}"
-                    ContentStringFormat="Click to change ({0})" />
             </Grid>
-        </Grid>
+        </Border>
         <Border
             Grid.Row="2"
-            Margin="10"
-            Background="#FFBFBFBF"
+            Margin="5,0,5,5"
+            Background="{StaticResource SelectionBackground}"
             CornerRadius="13">
             <ListBox
                 Margin="5"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                Background="Transparent"
-                BorderThickness="0"
-                IsTabStop="False"
-                ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
+                ItemContainerStyle="{StaticResource ListBoxItemStyle}"
                 ItemsSource="{Binding Items}"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 SelectedItem="{Binding SelectedItem}"
-                SelectionMode="Single">
+                Style="{StaticResource ListBoxStyle}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid VerticalAlignment="Top" Columns="5" />
@@ -622,22 +535,16 @@
         </Border>
         <Border
             Grid.Row="3"
-            Margin="10"
-            Background="#FFBFBFBF"
+            Margin="5,0,5,5"
+            Background="{StaticResource SelectionBackground}"
             CornerRadius="13">
             <ListBox
                 Margin="5"
-                HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
-                Background="Transparent"
-                BorderThickness="0"
-                IsTabStop="False"
-                ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
+                ItemContainerStyle="{StaticResource ListBoxItemStyle}"
                 ItemsSource="{Binding Categories}"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 SelectedItem="{Binding SelectedCategory}"
-                SelectionMode="Single">
+                Style="{StaticResource ListBoxStyle}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Rows="1" />

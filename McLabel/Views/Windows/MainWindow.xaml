@@ -16,7 +16,7 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
-    <Border Background="#E2E2E2" CornerRadius="8">
+    <Border Background="{DynamicResource MainBackground}" CornerRadius="8">
         <Grid Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />

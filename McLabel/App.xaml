@@ -7,10 +7,20 @@
     StartupUri="Views/Windows/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
-            <vmb:ViewModelLocator x:Key="Locator" />
+            <SolidColorBrush x:Key="ItemBorderBrush" Color="#424242" />
+            <SolidColorBrush x:Key="MainBackground" Color="#bfbfbf" />
+            <SolidColorBrush x:Key="SelectionBackground" Color="#3d3d3d" />
+            <SolidColorBrush x:Key="LabelBackground" Color="#ffffff" />
+            <SolidColorBrush x:Key="LabelBorderBrush" Color="#111111" />
+            <SolidColorBrush x:Key="NoItemSelectedTextBrush" Color="#2D2D2D" />
+            <SolidColorBrush x:Key="DefaultTextBrush" Color="#dcdcdc" />
 
+            <vmb:ViewModelLocator x:Key="Locator" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Templates/ViewDataTemplates.xaml" />
+                <ResourceDictionary Source="Templates/ListBoxTemplates.xaml" />
+                <ResourceDictionary Source="Templates/ButtonTemplates.xaml" />
+                <ResourceDictionary Source="Templates/TextBlockTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

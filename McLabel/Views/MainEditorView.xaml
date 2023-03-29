@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:conv="clr-namespace:McLabel.Utils.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fa5="http://schemas.fontawesome.com/icons/"
     xmlns:local="clr-namespace:McLabel.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:McLabel.ViewModels"
@@ -25,40 +26,40 @@
             <RowDefinition Height="2.5*" />
             <RowDefinition Height="auto" MinHeight="50" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Margin="5,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             <Button
                 x:Name="ButtonSave"
-                Grid.Column="1"
-                Width="100"
-                Height="30"
-                Margin="10,3"
-                Command="{Binding SaveCommand}"
-                Content="Save" />
-            <UniformGrid
                 Grid.Column="0"
+                Width="120"
+                HorizontalAlignment="Left"
+                Command="{Binding SaveCommand}"
+                Content="Save"
+                Style="{StaticResource MainButtonStyle}"
+                Tag="Solid_Save" />
+            <StackPanel
+                Grid.Column="1"
                 HorizontalAlignment="Center"
-                Rows="1">
+                Orientation="Horizontal">
                 <Button
                     Grid.Row="0"
-                    Width="150"
-                    Height="30"
-                    Margin="3"
+                    Margin="0,3,3,3"
                     HorizontalAlignment="Center"
                     Command="{Binding AddNewItemCommand}"
-                    Content="Add new item" />
+                    Content="Add new item"
+                    Style="{StaticResource MainButtonStyle}"
+                    Tag="Solid_Plus" />
                 <Button
                     Grid.Row="0"
-                    Width="150"
-                    Height="30"
-                    Margin="3"
                     HorizontalAlignment="Center"
                     Command="{Binding AddNewCategoryCommand}"
-                    Content="Add new category" />
-            </UniformGrid>
+                    Content="Add new category"
+                    Style="{StaticResource MainButtonStyle}"
+                    Tag="Solid_FileMedical" />
+            </StackPanel>
         </Grid>
         <Border
             Grid.Row="1"
@@ -102,7 +103,14 @@
                             Background="{StaticResource LabelBackground}"
                             Visibility="{Binding IsItemSelected,
                                                  Converter={StaticResource ReversedBooleanConverter}}">
-                            <TextBlock Style="{StaticResource NoItemSelectedTextStyle}" Text="No item selected" />
+                            <StackPanel VerticalAlignment="Center" Orientation="Vertical">
+                                <fa5:FontAwesome
+                                    Margin="15"
+                                    FontSize="60"
+                                    Icon="Regular_Frown"
+                                    Style="{StaticResource NoItemSelectedTextStyle}" />
+                                <TextBlock Style="{StaticResource NoItemSelectedTextStyle}" Text="No item selected" />
+                            </StackPanel>
                         </Border>
                         <TextBlock
                             Grid.Row="0"
@@ -344,6 +352,7 @@
                         Grid.Column="1"
                         Margin="3"
                         IsEnabled="{Binding IsItemSelected}"
+                        Style="{DynamicResource TextBoxStyle}"
                         Text="{Binding SelectedItem.Name,
                                        UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
@@ -357,6 +366,7 @@
                         Grid.Column="1"
                         Margin="3"
                         IsEnabled="{Binding IsItemSelected}"
+                        Style="{DynamicResource TextBoxStyle}"
                         Text="{Binding SelectedItem.Exp1Days,
                                        UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
@@ -370,6 +380,7 @@
                         Grid.Column="1"
                         Margin="3"
                         IsEnabled="{Binding IsItemSelected}"
+                        Style="{DynamicResource TextBoxStyle}"
                         Text="{Binding SelectedItem.Exp1Hours,
                                        UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
@@ -383,6 +394,7 @@
                         Grid.Column="1"
                         Margin="3"
                         IsEnabled="{Binding IsItemSelected}"
+                        Style="{DynamicResource TextBoxStyle}"
                         Text="{Binding SelectedItem.Exp1Minutes,
                                        UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
@@ -395,6 +407,7 @@
                         Grid.Column="1"
                         Margin="3"
                         IsEnabled="{Binding IsItemSelected}"
+                        Style="{DynamicResource TextBoxStyle}"
                         Text="{Binding SelectedItem.Exp1Message,
                                        UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
@@ -420,6 +433,7 @@
                         Grid.Column="3"
                         Margin="3"
                         IsEnabled="{Binding IsItemSelected}"
+                        Style="{DynamicResource TextBoxStyle}"
                         Text="{Binding SelectedItem.Line1st,
                                        UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
@@ -432,6 +446,7 @@
                         Grid.Column="3"
                         Margin="3"
                         IsEnabled="{Binding IsItemSelected}"
+                        Style="{DynamicResource TextBoxStyle}"
                         Text="{Binding SelectedItem.Line2nd,
                                        UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
@@ -445,6 +460,7 @@
                         Grid.Column="3"
                         Margin="3"
                         IsEnabled="{Binding IsItemSelected}"
+                        Style="{DynamicResource TextBoxStyle}"
                         Text="{Binding SelectedItem.Exp2Days,
                                        UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
@@ -458,6 +474,7 @@
                         Grid.Column="3"
                         Margin="3"
                         IsEnabled="{Binding IsItemSelected}"
+                        Style="{DynamicResource TextBoxStyle}"
                         Text="{Binding SelectedItem.Exp2Hours,
                                        UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
@@ -471,6 +488,7 @@
                         Grid.Column="3"
                         Margin="3"
                         IsEnabled="{Binding IsItemSelected}"
+                        Style="{DynamicResource TextBoxStyle}"
                         Text="{Binding SelectedItem.Exp2Minutes,
                                        UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
@@ -483,6 +501,7 @@
                         Grid.Column="3"
                         Margin="3"
                         IsEnabled="{Binding IsItemSelected}"
+                        Style="{DynamicResource TextBoxStyle}"
                         Text="{Binding SelectedItem.Exp2Message,
                                        UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
@@ -495,6 +514,7 @@
                         Grid.Row="6"
                         Grid.Column="1"
                         Margin="3"
+                        Style="{DynamicResource TextBoxStyle}"
                         Text="{Binding SelectedCategory.Name,
                                        UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
@@ -510,7 +530,8 @@
                         Command="{Binding GetRandomColorCommand,
                                           UpdateSourceTrigger=PropertyChanged}"
                         Content="{Binding SelectedCategory.Color}"
-                        ContentStringFormat="Click to change ({0})" />
+                        ContentStringFormat="Click to change ({0})"
+                        Style="{StaticResource ChangeColorButtonStyle}" />
                 </Grid>
             </Grid>
         </Border>

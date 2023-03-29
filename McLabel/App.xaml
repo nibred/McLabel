@@ -8,12 +8,25 @@
     <Application.Resources>
         <ResourceDictionary>
             <SolidColorBrush x:Key="ItemBorderBrush" Color="#424242" />
-            <SolidColorBrush x:Key="MainBackground" Color="#bfbfbf" />
-            <SolidColorBrush x:Key="SelectionBackground" Color="#3d3d3d" />
-            <SolidColorBrush x:Key="LabelBackground" Color="#ffffff" />
+            <SolidColorBrush x:Key="MainBackground" Color="#383c40" />
+            <SolidColorBrush x:Key="SelectionBackground" Color="#22272c" />
+            <SolidColorBrush x:Key="LabelBackground" Color="#fcfbf8" />
             <SolidColorBrush x:Key="LabelBorderBrush" Color="#111111" />
-            <SolidColorBrush x:Key="NoItemSelectedTextBrush" Color="#2D2D2D" />
-            <SolidColorBrush x:Key="DefaultTextBrush" Color="#dcdcdc" />
+            <SolidColorBrush x:Key="NoItemSelectedTextBrush" Color="#383c40" />
+            <SolidColorBrush x:Key="DefaultTextBrush" Color="#aafcfbf8" />
+
+            <!--  Button colors  -->
+            <SolidColorBrush x:Key="MainButtonBackgroundBrush" Color="#22272c" />
+            <SolidColorBrush x:Key="MainButtonBorderBrush" Color="#fcfbf8" />
+            <SolidColorBrush x:Key="MainButtonForegroundBrush" Color="#fcfbf8" />
+            <SolidColorBrush x:Key="MainButtonDisabledBrush" Color="#2e343b" />
+            <SolidColorBrush x:Key="DeleteButtonMouseOverBrush" Color="#B73636" />
+
+            <!--  TextBox colors  -->
+            <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="#dbdcda" />
+            <SolidColorBrush x:Key="TextBoxTextBrush" Color="#22272c" />
+            <SolidColorBrush x:Key="TextBoxMouseOverBackgroundBrush" Color="#fcfbf8" />
+
 
             <vmb:ViewModelLocator x:Key="Locator" />
             <ResourceDictionary.MergedDictionaries>
@@ -21,6 +34,7 @@
                 <ResourceDictionary Source="Templates/ListBoxTemplates.xaml" />
                 <ResourceDictionary Source="Templates/ButtonTemplates.xaml" />
                 <ResourceDictionary Source="Templates/TextBlockTemplates.xaml" />
+                <ResourceDictionary Source="Templates/TextBoxTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

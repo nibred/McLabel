@@ -9,6 +9,7 @@
         <ResourceDictionary>
             <SolidColorBrush x:Key="ItemBorderBrush" Color="#424242" />
             <SolidColorBrush x:Key="MainBackground" Color="#383c40" />
+            <SolidColorBrush x:Key="MainBackgroundStop" Color="#25282a" />
             <SolidColorBrush x:Key="SelectionBackground" Color="#22272c" />
             <SolidColorBrush x:Key="LabelBackground" Color="#fcfbf8" />
             <SolidColorBrush x:Key="LabelBorderBrush" Color="#111111" />

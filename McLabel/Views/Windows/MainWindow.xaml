@@ -16,12 +16,36 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
-    <Border Background="{DynamicResource MainBackground}" CornerRadius="8">
+    <Border CornerRadius="10" MouseDown="Border_MouseDown">
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                <GradientStop Offset="0" Color="#383c40" />
+                <GradientStop Offset="1" Color="#393D41" />
+            </LinearGradientBrush>
+        </Border.Background>
         <Grid Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Margin="10,0"
+                    VerticalAlignment="Center"
+                    FontSize="15"
+                    Foreground="{DynamicResource DefaultTextBrush}"
+                    Text="AccuDate 9700 Manager" />
+                <Button
+                    Grid.Column="1"
+                    Margin="10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource CloseButtonStyle}" />
+            </Grid>
             <ContentControl Grid.Row="1" Content="{Binding CurrentVM}" />
         </Grid>
     </Border>

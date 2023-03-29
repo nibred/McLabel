@@ -35,6 +35,7 @@
                 <ResourceDictionary Source="Templates/ButtonTemplates.xaml" />
                 <ResourceDictionary Source="Templates/TextBlockTemplates.xaml" />
                 <ResourceDictionary Source="Templates/TextBoxTemplates.xaml" />
+                <ResourceDictionary Source="Templates/ComboBoxTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

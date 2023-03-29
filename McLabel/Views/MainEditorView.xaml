@@ -422,7 +422,8 @@
                         DisplayMemberPath="Name"
                         IsEnabled="{Binding IsItemSelected}"
                         ItemsSource="{Binding Categories}"
-                        SelectedItem="{Binding ChangeCategory}" />
+                        SelectedItem="{Binding ChangeCategory}"
+                        Style="{StaticResource ComboBoxStyle}" />
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="2"

@@ -17,6 +17,14 @@
         Height="250"
         Background="{DynamicResource SelectionBackground}"
         CornerRadius="10">
+        <Border.Effect>
+            <DropShadowEffect
+                BlurRadius="10"
+                Opacity=".6"
+                ShadowDepth="0"
+                Color="{Binding Source={StaticResource SelectionBackground},
+                                Path=Color}" />
+        </Border.Effect>
         <Grid Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*" />

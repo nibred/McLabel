@@ -100,6 +100,7 @@
                                 Grid.Column="0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
+                                FontSize="15"
                                 Text="{Binding Name}"
                                 TextWrapping="Wrap" />
                         </Grid>

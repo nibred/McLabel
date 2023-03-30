@@ -107,7 +107,6 @@
                             IsOpen="{TemplateBinding IsDropDownOpen}"
                             Placement="Bottom"
                             PopupAnimation="Slide">
-
                             <Grid
                                 Name="DropDown"
                                 MinWidth="{TemplateBinding ActualWidth}"
@@ -178,4 +177,5 @@
             </Setter.Value>
         </Setter>
     </Style>
+
 </ResourceDictionary>

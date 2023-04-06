@@ -44,6 +44,7 @@
                     Margin="10,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
+                    Command="{Binding CloseCommand}"
                     Style="{StaticResource CloseButtonStyle}" />
             </Grid>
             <ContentControl Grid.Row="1" Content="{Binding CurrentVM}" />

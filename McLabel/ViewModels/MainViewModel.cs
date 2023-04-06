@@ -1,10 +1,13 @@
-﻿using McLabel.Services;
+﻿using McLabel.Commands;
+using McLabel.Services;
 using McLabel.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace McLabel.ViewModels
 {
@@ -12,6 +15,7 @@ namespace McLabel.ViewModels
     {
         private readonly ViewNavigationService _viewNavigationService;
         public NotifyBase CurrentVM => _viewNavigationService.CurrentVM;
+        public ICommand CloseCommand => new RelayCommand(o => Application.Current.Shutdown());
         public MainViewModel(ViewNavigationService viewNavigationService, StartScreenViewModel startScreenViewModel)
         {
             _viewNavigationService = viewNavigationService;

@@ -13,6 +13,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Xaml;
 
@@ -133,7 +134,6 @@ namespace McLabel.ViewModels
             SelectedCategory.Color = color;
             OnPropertyChanged(nameof(Items));
         }, o => IsCategorySelected);
-
         #endregion
 
 
@@ -141,38 +141,6 @@ namespace McLabel.ViewModels
         {
             _xmlService = xmlService;
             Categories = new ObservableCollection<ICategory>();
-        }
-        public MainEditorViewModel() : base() // design time constructor
-        {
-            Categories = new ObservableCollection<ICategory>();
-            for (int i = 0; i < 7; i++)
-            {
-                Categories.Add(new Category
-                {
-                    Color = $"{GenerateRandomColor()}",
-                    Name = $"Category {i + 1}",
-                    Printer = "",
-                    PrintTemplate = ""
-                });
-            }
-            SelectedCategory = Categories[0];
-            for (int i = 0; i < 10; i++)
-            {
-                SelectedCategory.Items.Add(new Item
-                {
-                    Name = $"Item {i + 1}",
-                    Category = "chleb",
-                    Exp1Days = "0",
-                    Exp1Hours = "4",
-                    Exp1Message = "gotowe",
-                    Exp1Minutes = "0",
-                    Exp2Message = "koniec",
-                    Exp2Days = "2",
-                    Line1st = $"Item {i + 1}",
-                    Line2nd = "Line2nd",
-                    Format = ""
-                });
-            }
         }
         private string GenerateRandomColor()
         {

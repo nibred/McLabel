@@ -106,7 +106,7 @@ namespace McLabel.ViewModels
         {
             Categories.Add(new Category()
             {
-                Name = "New category",
+                Name = $"New category {Categories.Count + 1}",
                 Color = $"{GenerateRandomColor()}",
                 Printer = "",
                 PrintTemplate = "",

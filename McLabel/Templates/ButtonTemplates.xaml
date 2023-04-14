@@ -118,12 +118,12 @@
     </Style>
 
     <Style x:Key="StartScreenSelectButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="{DynamicResource MainButtonBorderBrush}" />
-        <Setter Property="Foreground" Value="{DynamicResource MainButtonBackgroundBrush}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource DefaultTextBrush}" /> 
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="{DynamicResource MainButtonBorderBrush}" />
         <Setter Property="Height" Value="35" />
         <Setter Property="Template">
@@ -146,9 +146,8 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Foreground" Value="{DynamicResource DefaultTextBrush}" />
-                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="Background" Value="{DynamicResource MainButtonBorderBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource MainButtonBackgroundBrush}" />
                         </Trigger>
                         <Trigger Property="IsMouseCaptured" Value="True">
                             <Setter Property="Background" Value="{DynamicResource MainButtonBorderBrush}" />

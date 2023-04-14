@@ -25,6 +25,7 @@ namespace McLabel.ViewModels
         private readonly IFileService _xmlService;
         private IItem _selectedItem;
         private ICategory _selectedCategory;
+        private readonly Random _random = new Random();
         #endregion
 
         #region observable collections
@@ -144,11 +145,10 @@ namespace McLabel.ViewModels
         }
         private string GenerateRandomColor()
         {
-            Random random = new Random();
             string chars = "123567890abcdef";
             string result = "#";
             for (int i = 0; i < 6; i++)
-                result += chars[random.Next(chars.Length)];
+                result += chars[_random.Next(chars.Length)];
             return result;
         }
     }

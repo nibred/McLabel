@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:McLabel"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="AccuDate 9700 Manager"
     Width="1024"
     Height="768"
     AllowsTransparency="True"
@@ -16,13 +17,23 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
-    <Border CornerRadius="10" MouseDown="Border_MouseDown">
+    <Border
+        Margin="22"
+        CornerRadius="10"
+        MouseDown="Border_MouseDown">
         <Border.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                 <GradientStop Offset="0" Color="#383c40" />
                 <GradientStop Offset="1" Color="#393D41" />
             </LinearGradientBrush>
         </Border.Background>
+        <Border.Effect>
+            <DropShadowEffect
+                BlurRadius="20"
+                Opacity="0.8"
+                ShadowDepth="0"
+                Color="Black" />
+        </Border.Effect>
         <Grid Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />

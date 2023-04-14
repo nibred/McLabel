@@ -21,7 +21,7 @@
             <SolidColorBrush x:Key="MainButtonBorderBrush" Color="#fcfbf8" />
             <SolidColorBrush x:Key="MainButtonForegroundBrush" Color="#fcfbf8" />
             <SolidColorBrush x:Key="MainButtonDisabledBrush" Color="#2e343b" />
-            <SolidColorBrush x:Key="DeleteButtonMouseOverBrush" Color="#B73636" />
+            <SolidColorBrush x:Key="DeleteButtonMouseOverBrush" Color="#B12626" />
 
             <!--  TextBox colors  -->
             <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="#dbdcda" />

@@ -42,10 +42,10 @@
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock
-                    Margin="10,0"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="15"
                     Foreground="{DynamicResource DefaultTextBrush}"

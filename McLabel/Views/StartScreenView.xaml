@@ -94,7 +94,7 @@
                     FontSize="14"
                     FontWeight="Bold"
                     Foreground="{StaticResource DefaultTextBrush}"
-                    Text="OR" />
+                    Text="or" />
                 <Button
                     Grid.Column="2"
                     Command="{Binding OpenMainEditorCommand}"

@@ -12,7 +12,7 @@ namespace McLabel.Services
 {
     internal class FileDialogService
     {
-        private const string FILTER = "XML Files (*.xml)|*.xml";
+        private const string _FILTER = "XML Files (*.xml)|*.xml";
         private string _selectedPath;
         public bool OpenFiles(out IEnumerable<string> selectedFiles)
         {
@@ -21,7 +21,7 @@ namespace McLabel.Services
                 Title = "Select files",
                 AddExtension = true,
                 Multiselect = true,
-                Filter = FILTER
+                Filter = _FILTER
             };
             if (openDialog.ShowDialog() == true)
             {
@@ -36,7 +36,7 @@ namespace McLabel.Services
             SaveFileDialog saveFileDialog = new SaveFileDialog()
             {
                 AddExtension = true,
-                Filter = FILTER,
+                Filter = _FILTER,
                 ValidateNames = true,
                 CheckPathExists = true,
                 FileName = filename

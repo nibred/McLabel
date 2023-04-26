@@ -10,7 +10,7 @@
     xmlns:vm="clr-namespace:McLabel.ViewModels"
     d:DesignHeight="720"
     d:DesignWidth="1024"
-    FontFamily="Arial"
+    FontFamily="Segoe UI"
     mc:Ignorable="d">
     <UserControl.Resources>
         <conv:ReversedBooleanToVisibiltyConverter x:Key="ReversedBooleanConverter" />
@@ -35,9 +35,12 @@
                 Width="120"
                 HorizontalAlignment="Left"
                 Command="{Binding SaveCommand}"
-                Content="Save"
-                Style="{StaticResource MainButtonStyle}"
-                Tag="Solid_Save" />
+                Style="{StaticResource MainButtonStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <fa5:FontAwesome Icon="Solid_Save" Style="{StaticResource buttonIcon}" />
+                    <TextBlock Style="{StaticResource buttonText}" Text="Save" />
+                </StackPanel>
+            </Button>
             <StackPanel
                 Grid.Column="1"
                 HorizontalAlignment="Center"
@@ -47,16 +50,22 @@
                     Margin="0,3,3,3"
                     HorizontalAlignment="Center"
                     Command="{Binding AddNewItemCommand}"
-                    Content="Add new item"
-                    Style="{StaticResource MainButtonStyle}"
-                    Tag="Solid_Plus" />
+                    Style="{StaticResource MainButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa5:FontAwesome Icon="Solid_Plus" Style="{StaticResource buttonIcon}" />
+                        <TextBlock Style="{StaticResource buttonText}" Text="Add new item" />
+                    </StackPanel>
+                </Button>
                 <Button
                     Grid.Row="0"
                     HorizontalAlignment="Center"
                     Command="{Binding AddNewCategoryCommand}"
-                    Content="Add new category"
-                    Style="{StaticResource MainButtonStyle}"
-                    Tag="Solid_FileMedical" />
+                    Style="{StaticResource MainButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa5:FontAwesome Icon="Solid_FileMedical" Style="{StaticResource buttonIcon}" />
+                        <TextBlock Style="{StaticResource buttonText}" Text="Add new category" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Grid>
         <Border

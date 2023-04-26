@@ -13,6 +13,7 @@ namespace McLabel.Utils.Registrators
         public static IServiceCollection AddViewModels(this IServiceCollection services) => services
             .AddSingleton<MainViewModel>()
             .AddSingleton<StartScreenViewModel>()
+            .AddSingleton<ConfirmationWindowViewModel>()
             .AddSingleton<MainEditorViewModel>();
     }
 }

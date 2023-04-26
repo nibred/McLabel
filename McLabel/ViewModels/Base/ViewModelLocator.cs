@@ -10,5 +10,6 @@ namespace McLabel.ViewModels.Base
     internal class ViewModelLocator
     {
         public MainViewModel MainViewModel => App.Services.GetRequiredService<MainViewModel>();
+        public ConfirmationWindowViewModel ConfirmationWindowViewModel => App.Services.GetRequiredService<ConfirmationWindowViewModel>();
     }
 }

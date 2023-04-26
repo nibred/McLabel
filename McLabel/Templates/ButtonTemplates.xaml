@@ -22,32 +22,12 @@
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="10"
                         SnapsToDevicePixels="True">
-                        <Grid Margin="3" HorizontalAlignment="Center">
-                            <fa5:FontAwesome
-                                x:Name="Icon"
-                                Margin="10,0,15,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                FontSize="20"
-                                Foreground="{DynamicResource MainButtonBorderBrush}"
-                                Icon="{Binding Tag,
-                                               RelativeSource={RelativeSource FindAncestor,
-                                                                              AncestorType=Button}}" />
-                            <TextBlock
-                                Margin="35,0,10,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                FontSize="{TemplateBinding FontSize}"
-                                SnapsToDevicePixels="True"
-                                Text="{TemplateBinding Content}"
-                                TextWrapping="Wrap" />
-                        </Grid>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="{DynamicResource MainButtonBorderBrush}" />
                             <Setter Property="Foreground" Value="{DynamicResource MainButtonBackgroundBrush}" />
-                            <Setter TargetName="Icon" Property="Foreground" Value="{DynamicResource MainButtonBackgroundBrush}" />
                             <Setter Property="FontWeight" Value="Bold" />
                         </Trigger>
                         <Trigger Property="IsMouseCaptured" Value="True">
@@ -60,6 +40,17 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Key="buttonIcon" TargetType="fa5:FontAwesome">
+        <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Button}}" />
+        <Setter Property="FontSize" Value="20" />
+    </Style>
+
+    <Style x:Key="buttonText" TargetType="TextBlock">
+        <Setter Property="Margin" Value="10,0,0,0" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
     <Style x:Key="ChangeColorButtonStyle" TargetType="{x:Type Button}">
@@ -119,7 +110,7 @@
 
     <Style x:Key="StartScreenSelectButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="{DynamicResource DefaultTextBrush}" /> 
+        <Setter Property="Foreground" Value="{DynamicResource DefaultTextBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -159,7 +150,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style x:Key="CloseButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource DefaultTextBrush}" />

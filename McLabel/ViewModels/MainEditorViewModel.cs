@@ -1,6 +1,7 @@
 ﻿using McLabel.Commands;
 using McLabel.Models;
 using McLabel.Models.Interfaces;
+using McLabel.Services;
 using McLabel.Services.Interfaces;
 using McLabel.Utils.Extensions;
 using McLabel.ViewModels.Base;
@@ -23,6 +24,7 @@ namespace McLabel.ViewModels
     {
         #region private fields
         private readonly IFileService _xmlService;
+        private readonly FileDialogService _fileDialogService;
         private IItem _selectedItem;
         private ICategory _selectedCategory;
         private readonly Random _random = new Random();
@@ -115,6 +117,8 @@ namespace McLabel.ViewModels
         });
         public ICommand RemoveElementCommand => new RelayCommand(o =>
         {
+            if (_fileDialogService.ShowConfirmationDialog("test") != true)
+                return;
             if (o is Item)
             {
                 SelectedCategory.Items.Remove(o as Item);
@@ -138,9 +142,10 @@ namespace McLabel.ViewModels
         #endregion
 
 
-        public MainEditorViewModel(IFileService xmlService)
+        public MainEditorViewModel(IFileService xmlService, FileDialogService fileDialogService)
         {
             _xmlService = xmlService;
+            _fileDialogService = fileDialogService; // TODO! resolve for test
             Categories = new ObservableCollection<ICategory>();
         }
         private string GenerateRandomColor()

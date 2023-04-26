@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using McLabel.Views.Windows;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -60,6 +61,14 @@ namespace McLabel.Services
             {
                 return false;
             }
+        }
+
+        public bool ShowConfirmationDialog(string message)
+        {
+            var confirmationWindow = new ConfirmationWindow();
+            if (confirmationWindow.ShowDialog() == true)
+                return true;
+            return false;
         }
     }
 }

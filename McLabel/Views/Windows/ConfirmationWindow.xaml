@@ -6,18 +6,29 @@
     xmlns:fa5="http://schemas.fontawesome.com/icons/"
     xmlns:local="clr-namespace:McLabel.Views.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Width="300"
-    Height="150"
+    Width="400"
+    Height="220"
     AllowsTransparency="True"
     Background="Transparent"
     DataContext="{Binding ConfirmationWindowViewModel,
                           Source={StaticResource Locator}}"
     FontFamily="Segoe UI"
     ResizeMode="NoResize"
-    WindowStartupLocation="CenterOwner"
+    WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
-    <Border Background="{StaticResource MainBackground}" CornerRadius="12">
+    <Border
+        Margin="20"
+        Background="{StaticResource MainBackground}"
+        CornerRadius="12"
+        MouseDown="Border_MouseDown">
+        <Border.Effect>
+            <DropShadowEffect
+                BlurRadius="20"
+                Opacity="0.8"
+                ShadowDepth="0"
+                Color="Black" />
+        </Border.Effect>
         <Grid Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -34,13 +45,13 @@
                 Grid.ColumnSpan="2"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                FontSize="13"
+                FontSize="14"
                 Foreground="{DynamicResource DefaultTextBrush}"
                 Text="Confirmation" />
             <fa5:FontAwesome
                 Grid.Row="1"
                 Grid.Column="0"
-                Margin="10"
+                Margin="15"
                 VerticalAlignment="Center"
                 FontSize="40"
                 Foreground="{DynamicResource DefaultTextBrush}"
@@ -58,12 +69,12 @@
             <CheckBox
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
-                Margin="7"
+                Margin="7,10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Content="Don't show this window again"
                 Foreground="{DynamicResource DefaultTextBrush}"
-                Style="{DynamicResource CheckBoxStyle}" />
+                Style="{StaticResource CheckBoxStyle1}" />
             <Grid Grid.Row="3" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -72,13 +83,17 @@
                 <Button
                     Grid.Column="0"
                     Width="120"
-                    Height="25"
+                    Height="35"
+                    Margin="10,0"
+                    HorizontalAlignment="Right"
                     Content="OK"
                     Style="{StaticResource MainButtonStyle}" />
                 <Button
                     Grid.Column="1"
                     Width="120"
-                    Height="25"
+                    Height="35"
+                    Margin="10,0"
+                    HorizontalAlignment="Left"
                     Content="Cancel"
                     Style="{StaticResource MainButtonStyle}" />
             </Grid>

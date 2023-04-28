@@ -267,6 +267,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\Base\CommandBase.cs" />
+    <Compile Include="Commands\DialogCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Interfaces\ICategory.cs" />

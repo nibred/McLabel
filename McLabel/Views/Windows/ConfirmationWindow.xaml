@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fa5="http://schemas.fontawesome.com/icons/"
     xmlns:local="clr-namespace:McLabel.Views.Windows"
+    xmlns:cmd="clr-namespace:McLabel.Commands"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Width="400"
     Height="220"
@@ -14,6 +15,7 @@
                           Source={StaticResource Locator}}"
     FontFamily="Segoe UI"
     ResizeMode="NoResize"
+    ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
@@ -60,7 +62,7 @@
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="1"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="15"
                 Foreground="{DynamicResource DefaultTextBrush}"
@@ -87,7 +89,11 @@
                     Margin="10,0"
                     HorizontalAlignment="Right"
                     Content="OK"
-                    Style="{StaticResource MainButtonStyle}" />
+                    Style="{StaticResource MainButtonStyle}" >
+                    <Button.Command>
+                        <cmd:DialogCommand DialogResult="True"/>
+                    </Button.Command>
+                </Button>
                 <Button
                     Grid.Column="1"
                     Width="120"
@@ -95,7 +101,11 @@
                     Margin="10,0"
                     HorizontalAlignment="Left"
                     Content="Cancel"
-                    Style="{StaticResource MainButtonStyle}" />
+                    Style="{StaticResource MainButtonStyle}" >
+                    <Button.Command>
+                        <cmd:DialogCommand DialogResult="False"/>
+                    </Button.Command>
+                </Button>
             </Grid>
         </Grid>
     </Border>

@@ -1,4 +1,5 @@
-﻿using McLabel.Views.Windows;
+﻿using McLabel.ViewModels;
+using McLabel.Views.Windows;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace McLabel.Services
     {
         private const string _FILTER = "XML Files (*.xml)|*.xml";
         private string _selectedPath;
+
         public bool OpenFiles(out IEnumerable<string> selectedFiles)
         {
             OpenFileDialog openDialog = new OpenFileDialog()
@@ -66,6 +68,8 @@ namespace McLabel.Services
         public bool ShowConfirmationDialog(string message)
         {
             var confirmationWindow = new ConfirmationWindow();
+            var confirmationVM = (ConfirmationWindowViewModel)confirmationWindow.DataContext;
+            confirmationVM.Message = message;
             if (confirmationWindow.ShowDialog() == true)
                 return true;
             return false;

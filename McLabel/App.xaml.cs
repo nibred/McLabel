@@ -19,6 +19,7 @@ namespace McLabel
             return Host.CreateDefaultBuilder(args)
                 .ConfigureServices(ConfigureServices);
         }
+        public static Window CurrentWindow => Current.Windows.OfType<Window>().FirstOrDefault(i => i.IsActive);
         public static IHost MainHost
         {
             get

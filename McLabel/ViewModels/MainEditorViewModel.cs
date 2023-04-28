@@ -117,7 +117,7 @@ namespace McLabel.ViewModels
         });
         public ICommand RemoveElementCommand => new RelayCommand(o =>
         {
-            if (_fileDialogService.ShowConfirmationDialog("test") != true)
+            if (_fileDialogService.ShowConfirmationDialog("Are you sure you want to delete?") != true)
                 return;
             if (o is Item)
             {

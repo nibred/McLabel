@@ -28,6 +28,7 @@ namespace McLabel.ViewModels
         private IItem _selectedItem;
         private ICategory _selectedCategory;
         private readonly Random _random = new Random();
+        private const int _CATEGORIES_MAX = 7;
         #endregion
 
         #region observable collections
@@ -108,23 +109,25 @@ namespace McLabel.ViewModels
         {
             Categories.Add(new Category()
             {
-                Name = $"New category {Categories.Count + 1}",
+                Name = $"New category",
                 Color = $"{GenerateRandomColor()}",
                 Printer = "",
                 PrintTemplate = "",
                 Items = new List<IItem>()
             });
-        });
+        }, o => Categories.Count < _CATEGORIES_MAX);
         public ICommand RemoveElementCommand => new RelayCommand(o =>
         {
-            if (_fileDialogService.ShowConfirmationDialog("Are you sure you want to delete?") != true)
-                return;
             if (o is Item)
             {
+                if (_fileDialogService.ShowConfirmationDialog("Are you sure you want to delete this item?") != true)
+                    return;
                 SelectedCategory.Items.Remove(o as Item);
             }
             else
             {
+                if (_fileDialogService.ShowConfirmationDialog("Are you sure you want to delete this category?\nAll items in this category will be removed!") != true)
+                    return;
                 Categories.Remove(o as Category);
             }
             OnPropertyChanged(nameof(Items));
@@ -140,7 +143,6 @@ namespace McLabel.ViewModels
             OnPropertyChanged(nameof(Items));
         }, o => IsCategorySelected);
         #endregion
-
 
         public MainEditorViewModel(IFileService xmlService, FileDialogService fileDialogService)
         {

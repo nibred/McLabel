@@ -70,7 +70,7 @@ namespace McLabel.Services
             var confirmationWindow = new ConfirmationWindow();
             var confirmationVM = (ConfirmationWindowViewModel)confirmationWindow.DataContext;
             confirmationVM.Message = message;
-            if (confirmationWindow.ShowDialog() == true)
+            if (confirmationVM.DontShowWindow || confirmationWindow.ShowDialog() == true)
                 return true;
             return false;
         }

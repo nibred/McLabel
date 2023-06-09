@@ -1,12 +1,7 @@
 ﻿using McLabel.ViewModels;
 using McLabel.Views.Windows;
-using Microsoft.Win32;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
 
 
@@ -14,17 +9,17 @@ namespace McLabel.Services
 {
     internal class FileDialogService
     {
-        private const string _FILTER = "XML Files (*.xml)|*.xml";
+        private const string Filter = "XML Files (*.xml)|*.xml";
         private string _selectedPath;
 
         public bool OpenFiles(out IEnumerable<string> selectedFiles)
         {
-            OpenFileDialog openDialog = new OpenFileDialog()
+            Microsoft.Win32.OpenFileDialog openDialog = new Microsoft.Win32.OpenFileDialog()
             {
                 Title = "Select files",
                 AddExtension = true,
                 Multiselect = true,
-                Filter = _FILTER
+                Filter = Filter
             };
             if (openDialog.ShowDialog() == true)
             {
@@ -34,20 +29,14 @@ namespace McLabel.Services
             selectedFiles = null;
             return false;
         }
+
         public bool SaveFile(XmlDocument document, string filename)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog()
+            FolderBrowserDialog saveDialog = new FolderBrowserDialog();
+            if (saveDialog.ShowDialog() == DialogResult.OK)
             {
-                AddExtension = true,
-                Filter = _FILTER,
-                ValidateNames = true,
-                CheckPathExists = true,
-                FileName = filename
-            };
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                _selectedPath = Path.GetDirectoryName(saveFileDialog.FileName);
-                document.Save(saveFileDialog.FileName);
+                _selectedPath = saveDialog.SelectedPath;
+                document.Save($"{_selectedPath}/{filename}.xml");
                 return true;
             }
             return false;

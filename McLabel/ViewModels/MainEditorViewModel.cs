@@ -28,7 +28,7 @@ namespace McLabel.ViewModels
         private IItem _selectedItem;
         private ICategory _selectedCategory;
         private readonly Random _random = new Random();
-        private const int _CATEGORIES_MAX = 7;
+        private const int CategoriesMax = 7;
         #endregion
 
         #region observable collections
@@ -115,7 +115,7 @@ namespace McLabel.ViewModels
                 PrintTemplate = "",
                 Items = new List<IItem>()
             });
-        }, o => Categories.Count < _CATEGORIES_MAX);
+        }, o => Categories.Count < CategoriesMax);
         public ICommand RemoveElementCommand => new RelayCommand(o =>
         {
             if (o is Item)

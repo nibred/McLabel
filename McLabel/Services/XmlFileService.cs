@@ -192,7 +192,14 @@ namespace McLabel.Services
             foreach (var xmlFile in xmlFiles)
             {
                 var document = new XmlDocument();
-                document.Load(xmlFile);
+                try
+                {
+                    document.Load(xmlFile);
+                }
+                catch
+                {
+                    break;
+                }
                 bool checkRootElement = document.DocumentElement?.Name == BASE_NODE;
                 bool checkCategories = document.SelectNodes(CATEGORY_NODE)?.Count > 0;
                 bool checkLabels = document.SelectNodes(ITEM_NODE)?.Count > 0;
